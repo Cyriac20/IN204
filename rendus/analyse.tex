@@ -1,0 +1,138 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0em}
+
+% Configuration de l'en-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Tétris IN204}
+\fancyhead[R]{Cyriac SALIGNAT \& Théotime GALMICHE}
+\fancyfoot[C]{\thepage}
+
+% Configuration du style
+\definecolor{codegray}{gray}{0.95}
+\lstset{
+  language=C,
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4
+}
+
+\begin{document}
+
+% ------------ PAGE DE GARDE ------------
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge \textbf{Analyse du projet IN204}}\\[0.5cm]
+    {\LARGE \textit{Création d'un jeu Tétris multijoueur}}\\[2.5cm]
+
+    {\Large \textbf{Réalisé par :}}\\[0.3cm]
+    {\large Cyriac SALIGNAT \hspace{1cm} Théotime GALMICHE}\\
+    {\small \texttt{cyriac.salignat@taep.fr \hspace{1cm} theotime.galmiche@taep.fr}}\\[2.5cm]
+
+    {\Large \textbf{Encadrants :}}\\[0.3cm]
+    {\large Bruno MONSUEZ}\\[0.3cm]
+    {\large Valentin PERELLE}\\[2cm]
+
+    \vfill
+
+    {\includegraphics[width=0.35\textwidth]{Logo_ENSTA-2025.svg.png}\\[0.5cm]
+    Année universitaire 2025--2026}
+
+    \vspace*{2cm}
+\end{titlepage}
+
+% ------------ TABLE DES MATIÈRES ------------
+\newpage
+\tableofcontents
+\newpage
+
+% ------------ CONTENU DU RAPPORT ------------
+\section{Introduction}
+Cette analyse intervient dans le cadre du cours IN204, et porte sur la création d'une jeu Tétris en C++ en binôme. 
+Le but est notamment d'utiliser les éléments vus lors des séances du cours : classes, constructeurs, conteneurs, etc. 
+\\
+Ce présent document détaille la direction prise et les choix effectués dans le lancement du développement du projet, et vise à structurer les objectifs ainsi que la manière d'y parvenir.
+
+\section{Analyse et spécifications}
+\subsection{Objectifs du projet}
+Le but du projet est d'obtenir une version fonctionnelle de Tétris, utilisable en suivant les instructions du README en clonant dépot Git. Il faut ainsi reproduire toutes les fonctionnalités présentent initialement dans le jeu et détaillés dans la section suivante. 
+Nous avons choisi d'implémenter l'affrontement multijoueur plutôt qu'une possible version 3D, puisque la notion d'hébergement du jeu nous intéressait particulièrement.
+\\
+Une attention particulière sera donnée à l'expérience utilisateur, en essayant de garantir une interface de jeu claire et intuitive, et des visuels agréables. Dans le même sens, les menus de sélections du mode de jeu ou de la difficulté se voudront ergonomiques.
+
+\subsection{Fonctionnalités attendues}
+Afin de fournir un jeu le plus similaire au Tétris original, nous comptons implémenter les Fonctionnalités suivantes : 
+\begin{itemize}
+    \item Création d'une grille de 22 lignes pour 10 colonnes.
+    \item Apparitions aléatoires et périodiques des blocs parmi la liste des 7 motifs possibles ; 
+    \item Rotation des pièces sous quatre angles différents (0°, 90°, 180° et 270°) ;
+    \item Disparition des blocs d'une ligne lorsqu'elle est entièrement remplie ;
+    \item Chute des blocs supérieurs lorsqu'une ligne disparaît ;
+    \item Arrêt du jeu lorsqu'un bloc dépasse la limite haute de la grille.
+\end{itemize}
+\begin{itemize}
+    \item Existence d'un système de points, prenant en compte le nombre de lignes supprimées simultanément et la difficulté de la partie (choisie avant le lancement de celle-ci, et allant de 1 à 15) ;
+    \item Définition du système de difficulté : joue sur la vitesse de chute des blocs, et, par conséquent, sur le délai de réaction que possède le joueur.
+\end{itemize}
+\begin{itemize}
+    \item Possibilité de jouer en multijoueur ;
+    \item Existence d'un mode "Affrontement solo", dans lequel le joueur pourra s'exercer en duel contre un Bot.
+\end{itemize}
+
+\subsection{Utilisation des notions vues en cours}
+\begin{itemize}
+    \item \textbf{Classes et héritage de classes} : créer une classe avec toutes les fonctionnalités communes aux pièce, puis des classes héritières avec les spécificités de chacune des pièces.
+    \item \textbf{Conteneurs} : créer les matrices pour la grille et pour les pièces.
+\end{itemize}
+
+
+\subsection{Choix effectués}
+
+Un premier choix a été d'utiliser SFML pour l'affichage graphique, ainsi que la gestion du temps et des sons.
+\\
+Ensuite, nous pensons opter pour SFML Network pour la partie multijoeur, afin de maximiser la compatibilité avec SFML
+
+\section{Structure du projet}
+\begin{verbatim}
+    IN204/
+    | src/
+    |   |----main.cpp
+    |   |---- grille.cpp
+    |   |---- pieces.cpp
+    |   |---- score.cpp
+    |   |---- interface.cpp
+    |   |---- res/
+    |       |---- font.ttf
+    |---- build/
+    |---- README.md
+\end{verbatim}
+
+
+
+
+
+\end{document}
