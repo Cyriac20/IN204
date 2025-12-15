@@ -11,7 +11,7 @@ int main()
     Font police;
     
 
-    if (!police.openFromFile("/home/cyriac/Cours/IN204/src/res/poppins.ttf")) {
+    if (!police.openFromFile("../../src/res/poppins.ttf")) {
         std::cerr << "Erreur lors du chargement de la police!" << std::endl;
         return -1;
     }
