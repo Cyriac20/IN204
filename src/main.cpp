@@ -1,5 +1,14 @@
 #include "grille.hpp"
+#include "menu.hpp"
 #include <iostream>
+
+
+enum class GameState {
+    MENU,
+    PLAYING,
+    OPTIONS,
+    SCORES
+};
 
 int main(){
 
@@ -7,19 +16,47 @@ int main(){
     sf::RenderWindow window(desktop, "Tetris", sf::State::Windowed); //création de la fenêtre de jeu 
     window.setFramerateLimit(60);
 
+
+
+    GameState etat_courant = GameState::MENU;
+
+    Menu menu(desktop.size.x, desktop.size.y);
+    menu.loadBackground("../src/res/image.jpg",desktop.size.x, desktop.size.y);
+
+    
     grille matrice;
 
     for (int j = 0; j < 10; ++j){
         matrice.set(18,j,1);
     }
-    while (window.isOpen()){ //boucle pour pouvoir fermer la fenêtre
+
+    while (window.isOpen()){ 
         
         while (const std::optional event = window.pollEvent()){
-            if (event->is<sf::Event::Closed>())
+            
+            auto keyEvent = event->getIf<sf::Event::KeyPressed>();
+
+            if (event->is<sf::Event::Closed>()) //pour pouvoir fermer la fenêtre
                 window.close();
+            
+            if (event->is<sf::Event::KeyPressed>()){
+                if (keyEvent->code == sf::Keyboard::Key::Enter){
+                   etat_courant = GameState::PLAYING;
+                }
+                if (keyEvent->code == sf::Keyboard::Key::Escape){
+                   etat_courant = GameState::MENU;
+                }
+            }
+            
         }
     window.clear(sf::Color(20,20,20));
-    matrice.afficher(window,520);
+    if (etat_courant == GameState::MENU){
+        menu.dessiner(window);
+    }
+    if (etat_courant == GameState::PLAYING){
+        matrice.afficher(window,520);
+    }
+    
     window.display();
     }
     
