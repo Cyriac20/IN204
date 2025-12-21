@@ -12,7 +12,9 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp)
+# Compile tous les .cpp du dossier src/
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+add_executable(main ${SOURCES})
+
 target_compile_features(main PRIVATE cxx_std_17)
 target_link_libraries(main PRIVATE SFML::Graphics SFML::Window SFML::System)
-

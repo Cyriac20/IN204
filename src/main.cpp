@@ -1,9 +1,32 @@
-#include <SFML/Graphics.hpp>
+#include "grille.hpp"
 #include <iostream>
 
-using namespace sf;
+int main(){
 
-int main()
+    auto desktop = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(desktop, "Tetris", sf::State::Windowed); //création de la fenêtre de jeu 
+    window.setFramerateLimit(60);
+
+    grille matrice;
+
+    for (int j = 0; j < 10; ++j){
+        matrice.set(18,j,1);
+    }
+    while (window.isOpen()){ //boucle pour pouvoir fermer la fenêtre
+        
+        while (const std::optional event = window.pollEvent()){
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
+    window.clear(sf::Color(20,20,20));
+    matrice.afficher(window,520);
+    window.display();
+    }
+    
+    
+}
+
+/*int main()
 {
     // SFML 3: VideoMode takes a Vector2u for size
     RenderWindow window(VideoMode({800u, 600u}), "Mon Titre");
@@ -43,7 +66,8 @@ int main()
     }
 
     return 0;
-}
+}*/
+
 /*int main()
 {
     auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
