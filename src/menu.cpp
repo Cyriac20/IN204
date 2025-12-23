@@ -10,7 +10,7 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
 
     for (size_t i = 0; i < items.size(); i++){
         sf::Text texte(police, items[i], 50);
-        texte.setFillColor(i == 0 ? sf::Color::Red : sf::Color::White);
+        texte.setFillColor(sf::Color::White);
         
         sf::FloatRect textBounds = texte.getLocalBounds();
         texte.setOrigin(sf::Vector2f(textBounds.size.x / 2.f, textBounds.size.y / 2.f));
@@ -44,3 +44,42 @@ void Menu::dessiner(sf::RenderWindow& window) {
         window.draw(option);
     }
 }
+
+void Menu::mouvement_souris(const sf::Vector2f& sourisPos) {
+    int old_index_souris = index_souris;
+    index_souris = -1;
+    
+    for (size_t i = 0; i < options.size(); i++){
+        sf::FloatRect bornes = options[i].getGlobalBounds();
+
+        if (bornes.contains(sourisPos)) {
+            index_souris = static_cast<int>(i);
+            break;
+        }
+    }
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        if (static_cast<int>(i) == index_souris){
+            options[i].setFillColor(sf::Color::Red);
+        }
+        else {
+            options[i].setFillColor(sf::Color::White);
+        }
+    }
+
+}    
+
+
+int Menu::clic_souris(const sf::Vector2f& sourisPos) {
+    for (size_t i = 0; i < options.size(); i++) {
+        sf::FloatRect bornes = options[i].getGlobalBounds();
+
+        if (bornes.contains(sourisPos)){
+            Index = static_cast<int>(i);
+            return Index;
+        }
+    }
+    
+    return -1; // aucune option cliquée
+}
+

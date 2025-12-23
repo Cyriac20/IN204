@@ -31,19 +31,46 @@ int main(){
     }
 
     while (window.isOpen()){ 
+
+        if (etat_courant == GameState::MENU){
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+            menu.mouvement_souris(worldPos);
+        }
         
         while (const std::optional event = window.pollEvent()){
+
+            if (event->is<sf::Event::MouseButtonPressed>()){ //évènement pour un clic de souris
+                auto clicEvent = event->getIf<sf::Event::MouseButtonPressed>();
+
+                if (etat_courant == GameState::MENU && clicEvent->button == sf::Mouse::Button::Left ){
+                sf::Vector2f sourisPos = window.mapPixelToCoords( sf::Vector2i(clicEvent->position) );
+                int clic = menu.clic_souris(sourisPos);
+
+                    if (clic != -1) {
+                        switch (clic) {
+                            case 0:
+                                etat_courant = GameState::PLAYING;
+                                break;
+                            case 3:
+                                window.close();
+                                break;
+                        }
+                    }
+                }
+            }
             
-            auto keyEvent = event->getIf<sf::Event::KeyPressed>();
 
             if (event->is<sf::Event::Closed>()) //pour pouvoir fermer la fenêtre
                 window.close();
             
-            if (event->is<sf::Event::KeyPressed>()){
-                if (keyEvent->code == sf::Keyboard::Key::Enter){
+            if (event->is<sf::Event::KeyPressed>()){ //évènement pour une touche pressée
+                auto toucheEvent = event->getIf<sf::Event::KeyPressed>();
+
+                if (toucheEvent->code == sf::Keyboard::Key::Enter){
                    etat_courant = GameState::PLAYING;
                 }
-                if (keyEvent->code == sf::Keyboard::Key::Escape){
+                if (toucheEvent->code == sf::Keyboard::Key::Escape){
                    etat_courant = GameState::MENU;
                 }
             }
