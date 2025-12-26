@@ -1,5 +1,6 @@
 #include "grille.hpp"
 #include "menu.hpp"
+#include "horloge.hpp"
 #include <iostream>
 
 
@@ -12,48 +13,62 @@ enum class GameState {
 
 int main(){
 
-    auto desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(desktop, "Tetris", sf::State::Windowed); //création de la fenêtre de jeu 
-    window.setFramerateLimit(60);
+    auto bureau = sf::VideoMode::getDesktopMode(); // récupération des dimensions de l'écran
+    sf::RenderWindow fenetre(bureau, "Tetris", sf::State::Windowed); //création de la fenêtre de jeu 
+    fenetre.setFramerateLimit(60);
 
 
 
     GameState etat_courant = GameState::MENU;
+    int largeur = bureau.size.x;
+    int hauteur = bureau.size.y;
+    Menu menu(largeur, hauteur);
+    menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
 
-    Menu menu(desktop.size.x, desktop.size.y);
-    menu.loadBackground("../src/res/image.jpg",desktop.size.x, desktop.size.y);
+    Horloge horloge;
 
-    
     grille matrice;
 
     for (int j = 0; j < 10; ++j){
         matrice.set(18,j,1);
     }
+    bool clicked = false;
 
-    while (window.isOpen()){ 
+    while (fenetre.isOpen()){ 
+
 
         if (etat_courant == GameState::MENU){
-            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-            menu.mouvement_souris(worldPos);
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(fenetre);
+            sf::Vector2f globalPos = fenetre.mapPixelToCoords(pixelPos);
+            menu.mouvement_souris(globalPos, clicked);
         }
         
-        while (const std::optional event = window.pollEvent()){
+        while (const std::optional event = fenetre.pollEvent()){ //récupère le premier évènement dans la file
 
-            if (event->is<sf::Event::MouseButtonPressed>()){ //évènement pour un clic de souris
-                auto clicEvent = event->getIf<sf::Event::MouseButtonPressed>();
+            
+            if (event->is<sf::Event::MouseButtonPressed>()){
+                clicked = true;
+            }
+            if (event->is<sf::Event::MouseButtonReleased>()){ //évènement pour un clic de souris
+                
+                clicked = false;
+                auto clicEvent = event->getIf<sf::Event::MouseButtonReleased>();
 
                 if (etat_courant == GameState::MENU && clicEvent->button == sf::Mouse::Button::Left ){
-                sf::Vector2f sourisPos = window.mapPixelToCoords( sf::Vector2i(clicEvent->position) );
-                int clic = menu.clic_souris(sourisPos);
+                
+                sf::Vector2f sourisPos = fenetre.mapPixelToCoords( clicEvent->position );
 
+                int clic = menu.clic_souris(sourisPos);
+    
                     if (clic != -1) {
                         switch (clic) {
                             case 0:
+                                horloge.restart();
                                 etat_courant = GameState::PLAYING;
+                            
                                 break;
                             case 3:
-                                window.close();
+                                fenetre.close();
                                 break;
                         }
                     }
@@ -62,7 +77,7 @@ int main(){
             
 
             if (event->is<sf::Event::Closed>()) //pour pouvoir fermer la fenêtre
-                window.close();
+                fenetre.close();
             
             if (event->is<sf::Event::KeyPressed>()){ //évènement pour une touche pressée
                 auto toucheEvent = event->getIf<sf::Event::KeyPressed>();
@@ -76,15 +91,19 @@ int main(){
             }
             
         }
-    window.clear(sf::Color(20,20,20));
+    fenetre.clear(sf::Color(20,20,20));
+
     if (etat_courant == GameState::MENU){
-        menu.dessiner(window);
+        menu.dessiner(fenetre);
     }
+
     if (etat_courant == GameState::PLAYING){
-        matrice.afficher(window,520);
+        horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
+        matrice.afficher(fenetre,520);
+        
     }
     
-    window.display();
+    fenetre.display();
     }
     
     

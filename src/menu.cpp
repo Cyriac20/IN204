@@ -21,14 +21,14 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
 
 }
 
-bool Menu::loadBackground(const std::string& filename, float windowWidth, float windowHeight) {
+bool Menu::loadBackground(const std::string& filename, float largeur, float hauteur) {
 
     fond_ecran_texture = std::make_unique<sf::Texture>();
     if (fond_ecran_texture->loadFromFile(filename)){
         fond_ecran_sprite = std::make_unique<sf::Sprite> (*fond_ecran_texture);
 
-        float scaleX = windowWidth / fond_ecran_texture->getSize().x;
-        float scaleY = windowHeight / fond_ecran_texture->getSize().y;
+        float scaleX = largeur / fond_ecran_texture->getSize().x;
+        float scaleY = hauteur / fond_ecran_texture->getSize().y;
         fond_ecran_sprite->setScale(sf::Vector2f(scaleX, scaleY));
 
         return true;
@@ -37,15 +37,15 @@ bool Menu::loadBackground(const std::string& filename, float windowWidth, float 
 
 }
 
-void Menu::dessiner(sf::RenderWindow& window) {
-    window.draw(*fond_ecran_sprite);
+void Menu::dessiner(sf::RenderWindow& fenetre) {
+    fenetre.draw(*fond_ecran_sprite);
 
-    for (const auto& option : options) {
-        window.draw(option);
+    for (auto& option : options) {
+        fenetre.draw(option);
     }
 }
 
-void Menu::mouvement_souris(const sf::Vector2f& sourisPos) {
+void Menu::mouvement_souris(const sf::Vector2f& sourisPos, bool clicked) {
     int old_index_souris = index_souris;
     index_souris = -1;
     
@@ -60,7 +60,8 @@ void Menu::mouvement_souris(const sf::Vector2f& sourisPos) {
 
     for (size_t i = 0; i < options.size(); ++i) {
         if (static_cast<int>(i) == index_souris){
-            options[i].setFillColor(sf::Color::Red);
+            if (clicked) {options[i].setFillColor(sf::Color::Green);}
+            else {options[i].setFillColor(sf::Color::Red); }
         }
         else {
             options[i].setFillColor(sf::Color::White);
@@ -76,6 +77,7 @@ int Menu::clic_souris(const sf::Vector2f& sourisPos) {
 
         if (bornes.contains(sourisPos)){
             Index = static_cast<int>(i);
+            options[i].setFillColor(sf::Color::Green);
             return Index;
         }
     }

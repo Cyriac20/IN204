@@ -20,10 +20,11 @@ class Menu {
     public :
 
     Menu(float largeur, float hauteur);
-    void mouvement_souris(const sf::Vector2f& sourisPos);
+    void mouvement_souris(const sf::Vector2f& sourisPos, bool clicked);
     int clic_souris(const sf::Vector2f& sourisPos );
-    void dessiner(sf::RenderWindow& window);
-    bool loadBackground(const std::string& filename, float windowWidth, float windowHeight);
+    void dessiner(sf::RenderWindow& fenetre);
+    bool loadBackground(const std::string& filename, float largeur, float hauteur);
+
 
 };
 

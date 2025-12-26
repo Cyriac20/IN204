@@ -44,28 +44,52 @@ void grille::set(int i, int j, int valeur){
 
 }
 
-void grille::afficher(sf::RenderWindow& window, int offsetX, int offsetY){
+void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
 
-    sf::RectangleShape carre(sf::Vector2f(TAILLE_CASE -1, TAILLE_CASE - 1)); //création de l'objet matrice
+    sf::VertexArray sommets(sf::PrimitiveType::Triangles);
+    sf::VertexArray lignes(sf::PrimitiveType::Lines);
+
 
     for (int i = 0; i < 22; ++i){
+
         for (int j = 0; j < 10; ++j)
         {
-            carre.setPosition(sf::Vector2f(offsetX + j * TAILLE_CASE, offsetY + i*TAILLE_CASE));
-             //position de la matrice
-            if ( matrice[i][j] == 0) { // si case vide, couleur noir sinon couleur bleu
-                carre.setFillColor(sf::Color(30,30,30)); 
-            }
-            else {
-                carre.setFillColor(sf::Color::Cyan);
-            }
+            
+            if ( matrice[i][j] != 0) { // si case vide, couleur noir sinon couleur bleu
+                
+                float x = offsetX + j * TAILLE_CASE;
+                float y = offsetY + i * TAILLE_CASE;
+                float taille = TAILLE_CASE - 1;
 
-            carre.setOutlineThickness(1); // pour les contours de la matrice
-            carre.setOutlineColor(sf::Color(50,50,50));
-            window.draw(carre);
+                sommets.append({ {x,y} , sf::Color::Cyan });
+                sommets.append({ {x + taille, y} , sf::Color::Cyan });
+                sommets.append({ {x, y + taille} , sf::Color::Cyan });
+
+                sommets.append({ {x + taille, y + taille} , sf::Color::Cyan });
+                sommets.append({ {x, y + taille} , sf::Color::Cyan });
+                sommets.append({ {x + taille, y } , sf::Color::Cyan });
+
+            }
         }
 
+
     }
+    for (int i = 0; i <= 22; i++){
+            float y_ligne = offsetY + i * TAILLE_CASE;
+            lignes.append( {{offsetX, y_ligne }, sf::Color(50,50,50) } );
+            lignes.append( {{offsetX + 10 * TAILLE_CASE, y_ligne}, sf::Color(50,50,50)} );
+        
+    }
+
+    for (int j = 0; j <= 10; j++){
+
+        float x_ligne = offsetX + j * TAILLE_CASE;
+        lignes.append( {{x_ligne, offsetY }, sf::Color(50,50,50)});
+        lignes.append( {{x_ligne, offsetY + 22 * TAILLE_CASE}, sf::Color(50,50,50)});
+    }
+    fenetre.draw(sommets);
+    fenetre.draw(lignes);
+
 
 }
 
