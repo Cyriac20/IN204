@@ -93,5 +93,61 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
 
 }
 
+void grille::apparition_piece(Piece piece){
+    for (std::array<int,2> coord : piece.position){
+        matrice[coord[0]][coord[1]] = 1;
+    }
+}
 
+void grille::mouvement_piece(Piece& piece, sf::Keyboard::Key touche){
+    std::array<std::array<int,2>,4> nouvelle_position;
 
+    for (std::array<int,2> coord : piece.position){
+        matrice[coord[0]][coord[1]] = 0; 
+        }
+
+    switch(touche){
+        case sf::Keyboard::Key::Left :
+        for (int k = 0; k < 4; ++k){
+
+            int i = piece.position[k][0];
+            int j = piece.position[k][1];
+            if (j > 0  && matrice[i][j-1] == 0){
+                nouvelle_position[k][0] = i;
+                nouvelle_position[k][1] = j-1;
+            } 
+
+            else{ return; }
+        }
+        break;
+        case sf::Keyboard::Key::Right :
+            for (int k = 0; k < 4; ++k){
+                
+                int i = piece.position[k][0];
+                int j = piece.position[k][1];
+                if (j < 9  && matrice[i][j+1] == 0){
+                    nouvelle_position[k][0] = i;
+                    nouvelle_position[k][1] = j+1;
+                } 
+
+                else{ return; }
+            }
+            break;
+        case sf::Keyboard::Key::Down :
+            for (int k = 0; k < 4; ++k){
+                
+                int i = piece.position[k][0];
+                int j = piece.position[k][1];
+                if (i < 21  && matrice[i+1][j] == 0){
+                    nouvelle_position[k][0] = i+1;
+                    nouvelle_position[k][1] = j;
+                } 
+
+            else{ return; }
+            }
+            break;
+
+    }
+    piece.position = nouvelle_position;
+
+}

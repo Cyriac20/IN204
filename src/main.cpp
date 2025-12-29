@@ -1,6 +1,7 @@
 #include "grille.hpp"
 #include "menu.hpp"
 #include "horloge.hpp"
+
 #include <iostream>
 
 
@@ -26,7 +27,7 @@ int main(){
     menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
 
     Horloge horloge;
-
+    Piece piece;
     grille matrice;
 
     for (int j = 0; j < 10; ++j){
@@ -82,14 +83,29 @@ int main(){
             if (event->is<sf::Event::KeyPressed>()){ //évènement pour une touche pressée
                 auto toucheEvent = event->getIf<sf::Event::KeyPressed>();
 
+                
                 if (toucheEvent->code == sf::Keyboard::Key::Enter){
                    etat_courant = GameState::PLAYING;
                 }
                 if (toucheEvent->code == sf::Keyboard::Key::Escape){
                    etat_courant = GameState::MENU;
                 }
+                
+                if (etat_courant == GameState::PLAYING){
+                    auto touche = toucheEvent->code;
+                    
+                    if (touche == sf::Keyboard::Key::Left || touche == sf::Keyboard::Key::Right || touche == sf::Keyboard::Key::Down){
+                        matrice.mouvement_piece(piece, touche);
+                        matrice.apparition_piece(piece);
+                    }
+                    if (touche== sf::Keyboard::Key::Space){
+                        matrice.apparition_piece(piece);    
+
+                    }
+                }
+                
             }
-            
+
         }
     fenetre.clear(sf::Color(20,20,20));
 
@@ -103,11 +119,13 @@ int main(){
         
     }
     
-    fenetre.display();
+    fenetre.display();      
     }
     
-    
 }
+    
+    
+
 
 /*int main()
 {

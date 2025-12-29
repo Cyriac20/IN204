@@ -4,7 +4,7 @@
 void Horloge::dessiner_horloge(sf::RenderWindow& fenetre, int largeur , int hauteur){
     
     sf::Text texte(police);     
-    std::string temps = std::to_string( int(horloge.getElapsedTime().asSeconds()) );
+    std::string temps = std::to_string( int(getElapsedTime().asSeconds()) );
     texte.setString ("Temps : " + temps + "s");
     texte.setCharacterSize(20);
     texte.setFillColor(sf::Color::White);
