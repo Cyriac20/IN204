@@ -102,9 +102,7 @@ void grille::apparition_piece(Piece piece){
 void grille::mouvement_piece(Piece& piece, sf::Keyboard::Key touche){
     std::array<std::array<int,2>,4> nouvelle_position;
 
-    for (std::array<int,2> coord : piece.position){
-        matrice[coord[0]][coord[1]] = 0; 
-        }
+    effacer_piece(piece);
 
     switch(touche){
         case sf::Keyboard::Key::Left :
@@ -143,11 +141,46 @@ void grille::mouvement_piece(Piece& piece, sf::Keyboard::Key touche){
                     nouvelle_position[k][1] = j;
                 } 
 
-            else{ return; }
+                else{ return; }
             }
             break;
 
     }
     piece.position = nouvelle_position;
 
+}
+
+void grille::rotation_piece(Piece& piece){
+    std::array<std::array<int,2>,4> nouvelle_position;
+    effacer_piece(piece);
+    int k = piece.rotation;
+    
+    nouvelle_position[0] = {piece.position[0][0]+2*k, piece.position[0][1]+2*k};
+    nouvelle_position[1] = {piece.position[1][0]+k, piece.position[1][1]+k};
+    nouvelle_position[2] = {piece.position[2][0], piece.position[2][1]};
+    nouvelle_position[3] = {piece.position[3][0]-k, piece.position[3][1]-k};
+    
+    if (emplacement_disponible(nouvelle_position)){
+        piece.position = nouvelle_position;
+        piece.rotation *= -1;
+    }
+}
+
+bool grille::emplacement_disponible(std::array<std::array<int,2>,4> position){
+
+    for (std::array<int,2> coord : position){
+        int i = coord[0];
+        int j = coord[1];
+        if (i > 21 || i < 0 || j > 9 || j < 0 || matrice[i][j] != 0){
+            return false;
+        }
+    }
+    return true;
+
+}
+
+void grille::effacer_piece(Piece& piece){
+    for (std::array<int,2> coord : piece.position){
+        matrice[coord[0]][coord[1]] = 0; 
+    }
 }

@@ -27,13 +27,15 @@ int main(){
     menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
 
     Horloge horloge;
-    Piece piece;
+    
     grille matrice;
 
-    for (int j = 0; j < 10; ++j){
+    /*for (int j = 0; j < 10; ++j){
         matrice.set(18,j,1);
-    }
+        matrice.set(10+j,5,1);
+    }*/
     bool clicked = false;
+    Piece* piece = new Piece;
 
     while (fenetre.isOpen()){ 
 
@@ -93,14 +95,19 @@ int main(){
                 
                 if (etat_courant == GameState::PLAYING){
                     auto touche = toucheEvent->code;
-                    
+
                     if (touche == sf::Keyboard::Key::Left || touche == sf::Keyboard::Key::Right || touche == sf::Keyboard::Key::Down){
-                        matrice.mouvement_piece(piece, touche);
-                        matrice.apparition_piece(piece);
+                        matrice.mouvement_piece(*piece, touche);
+                        matrice.apparition_piece(*piece);
                     }
                     if (touche== sf::Keyboard::Key::Space){
-                        matrice.apparition_piece(piece);    
-
+                        delete piece;
+                        Piece* piece = new Piece;
+                        matrice.apparition_piece(*piece);    
+                    }
+                    if (touche == sf::Keyboard::Key::Up){
+                        matrice.rotation_piece(*piece);
+                        matrice.apparition_piece(*piece);
                     }
                 }
                 

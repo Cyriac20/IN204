@@ -9,7 +9,10 @@ class Piece {
     private:
     
     public:
+    //~Piece();
+    int rotation;
     std::array<std::array<int,2>,4> position;
+
     
     Piece();
 
