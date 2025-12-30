@@ -51,7 +51,7 @@ public:
 // Pièce J
 class PieceJ : public Piece {
 public:
-    PieceI();
+    PieceJ();
     void rotate() override; // rotation spécifique
 };
 
