@@ -36,7 +36,7 @@ void PieceI::rotate() {
         position[i][1] = pivotX - y;
         position[i][0] = pivotY + x;
 
-}
+}}
 
 
 //----------------------- Piece T ---------------------------
