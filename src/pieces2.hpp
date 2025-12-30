@@ -1,5 +1,5 @@
-#ifndef PIECES_HPP
-#define PIECES_HPP
+#ifndef PIECES2_HPP
+#define PIECES2_HPP
 
 #include <SFML/Graphics.hpp>
 #include <iostream>

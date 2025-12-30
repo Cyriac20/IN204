@@ -1,4 +1,4 @@
-#include "pieces.hpp"
+#include "pieces2.hpp"
 
 Piece::Piece() {};
 
