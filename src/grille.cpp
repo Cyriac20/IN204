@@ -28,7 +28,9 @@ grille::grille() : matrice(
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0} }}) {}; 
 
-
+int grille::valeur(int i, int j){
+    return matrice[i][j];
+}
 
     
 
@@ -93,11 +95,7 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
 
 }
 
-void grille::apparition_piece(Piece& piece){
-    for (std::array<int,2> coord : piece.position){
-        matrice[coord[0]][coord[1]] = 1;
-    }
-}
+
 
 
 
@@ -112,10 +110,4 @@ bool grille::emplacement_disponible(std::array<std::array<int,2>,4> position){
     }
     return true;
 
-}
-
-void grille::effacer_piece(Piece& piece){
-    for (std::array<int,2> coord : piece.position){
-        matrice[coord[0]][coord[1]] = 0; 
-    }
 }

@@ -1,4 +1,4 @@
-#include "grille.hpp"
+#include "pieces.hpp"
 #include "menu.hpp"
 #include "horloge.hpp"
 
@@ -35,7 +35,7 @@ int main(){
         matrice.set(10+j,5,1);
     }*/
     bool clicked = false;
-    Piece* piece = new Piece;
+    std::unique_ptr<Piece> piece = std::make_unique<PieceL>();
 
     while (fenetre.isOpen()){ 
 
@@ -97,17 +97,16 @@ int main(){
                     auto touche = toucheEvent->code;
 
                     if (touche == sf::Keyboard::Key::Left || touche == sf::Keyboard::Key::Right || touche == sf::Keyboard::Key::Down){
-                        matrice.mouvement_piece(*piece, touche);
-                        matrice.apparition_piece(*piece);
+                        piece->mouvement(matrice, touche);
+
                     }
-                    if (touche== sf::Keyboard::Key::Space){
-                        delete piece;
-                        Piece* piece = new Piece;
-                        matrice.apparition_piece(*piece);    
+                    if (touche == sf::Keyboard::Key::Space){
+                        piece = std::make_unique<PieceJ>();
+                        piece->apparition(matrice);    
                     }
                     if (touche == sf::Keyboard::Key::Up){
-                        matrice.rotation_piece(*piece);
-                        matrice.apparition_piece(*piece);
+                        piece->rotation(matrice);
+                        
                     }
                 }
                 
@@ -123,7 +122,7 @@ int main(){
     if (etat_courant == GameState::PLAYING){
         horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
         matrice.afficher(fenetre,520);
-        
+    
     }
     
     fenetre.display();      
