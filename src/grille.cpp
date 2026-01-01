@@ -2,6 +2,8 @@
 #include <iostream>
 #include <numeric>
 
+const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
+};
 
 grille::grille() : matrice(
     {{   
@@ -62,14 +64,14 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
                 float x = offsetX + j * TAILLE_CASE;
                 float y = offsetY + i * TAILLE_CASE;
                 float taille = TAILLE_CASE - 1;
+                int indice = matrice[i][j] - 1;
+                sommets.append({ {x,y} , couleur[indice] });
+                sommets.append({ {x + taille, y} , couleur[indice] });
+                sommets.append({ {x, y + taille} , couleur[indice] });
 
-                sommets.append({ {x,y} , sf::Color::Cyan });
-                sommets.append({ {x + taille, y} , sf::Color::Cyan });
-                sommets.append({ {x, y + taille} , sf::Color::Cyan });
-
-                sommets.append({ {x + taille, y + taille} , sf::Color::Cyan });
-                sommets.append({ {x, y + taille} , sf::Color::Cyan });
-                sommets.append({ {x + taille, y } , sf::Color::Cyan });
+                sommets.append({ {x + taille, y + taille} , couleur[indice] });
+                sommets.append({ {x, y + taille} , couleur[indice] });
+                sommets.append({ {x + taille, y } , couleur[indice] });
 
             }
         }

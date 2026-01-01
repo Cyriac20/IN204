@@ -5,7 +5,7 @@ Piece::Piece() {};
 
 void Piece::apparition(grille& matrice){
     for (std::array<int,2> coord : position){
-        matrice.set(coord[0], coord[1], 1);
+        matrice.set(coord[0], coord[1], id);
     }
 }
 
@@ -78,8 +78,8 @@ PieceO::PieceO(){
                 {0,4}, {0,5}, 
                 {1,4}, {1,5}
             }};
-
-    couleur = sf::Color::Red;
+    id = 1;
+    
 }
 
 void PieceO::rotation(grille& matrice) {}; //La rotation n'a pas d'effet
@@ -93,8 +93,7 @@ PieceI::PieceI(){
                 {0,3}, {0,4}, {0,5}, {0,6}
             }};
     etat_rotation = 1;
-
-    couleur = sf::Color::Cyan;
+    id = 2;
 }
 
 void PieceI::rotation(grille& matrice){
@@ -119,8 +118,8 @@ void PieceI::rotation(grille& matrice){
 PieceT::PieceT(){
     position = {{ {0,4}, {1,3}, {1,4}, 
                         {1,5} }};
+    id = 3;
 
-    couleur = sf::Color::Yellow;
 }
 
 void PieceT::rotation(grille& matrice) {
@@ -154,7 +153,7 @@ PieceL::PieceL(){
     position = {{ {0,3}, {0,4}, {0,5}, 
                 {1,3} }};
 
-    couleur = sf::Color::Magenta;
+    id = 4;
 }
 
 void PieceL::rotation(grille& matrice) {
@@ -187,7 +186,7 @@ PieceJ::PieceJ(){
     position = {{ {0,3}, {1,3}, {1,4}, 
                                 {1,5} }};
 
-    couleur = sf::Color::Green;
+    id = 5;
 }
 
 void PieceJ::rotation(grille& matrice) {
@@ -220,7 +219,7 @@ PieceS::PieceS(){
     position = {{ {0,4}, {0,5}, 
         {1,3}, {1,4} }};
     etat_rotation = 1;
-    couleur = sf::Color::Blue;
+    id = 6;
 }
 
 void PieceS::rotation(grille& matrice){
@@ -246,7 +245,7 @@ PieceZ::PieceZ(){
     position = {{ {0,4}, {0,5}, 
                         {1,5}, {1,6} }};
     etat_rotation = 1;
-    couleur = sf::Color::White;
+    id = 7;
 }
 
 void PieceZ::rotation(grille& matrice){
@@ -265,4 +264,31 @@ void PieceZ::rotation(grille& matrice){
         etat_rotation *= -1;
     }
     apparition(matrice);
+}
+
+
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<> distrib(1,7);
+
+std::unique_ptr<Piece> piece_aleatoire(){
+    int choix = distrib(gen);
+    switch(choix){
+        case 1:
+            return std::make_unique<PieceI>();
+        case 2:
+            return std::make_unique<PieceO>();
+        case 3:
+            return std::make_unique<PieceT>();
+        case 4:
+            return std::make_unique<PieceL>();
+        case 5:
+            return std::make_unique<PieceJ>();
+        case 6:
+            return std::make_unique<PieceS>();
+        case 7:
+            return std::make_unique<PieceZ>();
+    }
+    return nullptr;
+
 }

@@ -1,6 +1,7 @@
 #ifndef PIECES2_HPP
 #define PIECES2_HPP
 
+#include <random>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <array>
@@ -10,7 +11,7 @@
 class Piece {
     protected:
         Piece(); //On ne crée pas directement la pièce dans la classe mère
-        sf::Color couleur;  // couleur de la pièce
+        int id;  // couleur de la pièce
 
     public:
         std::array<std::array<int,2>,4> position;
@@ -21,7 +22,6 @@ class Piece {
         void mouvement(grille& matrice, sf::Keyboard::Key touche);
         virtual void rotation(grille& matrice) = 0; //indique que la rotation des pièces est propre à chaque pièce
 
-        sf::Color getColor() { return couleur; }
 };
 
 
@@ -37,6 +37,7 @@ public:
 
 // Pièce O
 class PieceO : public Piece {
+
 public:
     PieceO();
     ~PieceO() override {};
@@ -54,6 +55,7 @@ public:
 
 // Pièce L
 class PieceL : public Piece {
+
 public:
     PieceL();
     ~PieceL() override {};
@@ -62,6 +64,7 @@ public:
 
 // Pièce J
 class PieceJ : public Piece {
+
 public:
     PieceJ();
     ~PieceJ() override {};
@@ -72,6 +75,7 @@ public:
 class PieceZ : public Piece {
 private : 
     int etat_rotation;
+    
 public:
     PieceZ();
     ~PieceZ() override {};
@@ -81,10 +85,13 @@ public:
 // Pièce S
 class PieceS : public Piece {
 private: 
+    
     int etat_rotation;
 public:
     PieceS();
     ~PieceS() override {};
     void rotation(grille& matrice) override; // rotation spécifique
 };
+
+std::unique_ptr<Piece> piece_aleatoire();
 #endif
