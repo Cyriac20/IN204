@@ -27,15 +27,13 @@ int main(){
     menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
 
     Horloge horloge;
+    sf::Clock horloge_gravite;
     
     grille matrice;
 
-    /*for (int j = 0; j < 10; ++j){
-        matrice.set(18,j,1);
-        matrice.set(10+j,5,1);
-    }*/
+    
     bool clicked = false;
-    std::unique_ptr<Piece> piece = std::make_unique<PieceL>();
+    std::unique_ptr<Piece> piece = piece_aleatoire();
 
     while (fenetre.isOpen()){ 
 
@@ -98,15 +96,10 @@ int main(){
 
                     if (touche == sf::Keyboard::Key::Left || touche == sf::Keyboard::Key::Right || touche == sf::Keyboard::Key::Down){
                         piece->mouvement(matrice, touche);
-
                     }
-                    if (touche == sf::Keyboard::Key::Space){
-                        piece = piece_aleatoire();
-                        piece->apparition(matrice);    
-                    }
+                    
                     if (touche == sf::Keyboard::Key::Up){
-                        piece->rotation(matrice);
-                        
+                        piece->rotation(matrice);   
                     }
                 }
                 
@@ -120,9 +113,13 @@ int main(){
     }
 
     if (etat_courant == GameState::PLAYING){
+        if(!piece->gravite(horloge_gravite, matrice)){
+            piece = piece_aleatoire();
+            piece->apparition(matrice);
+        };
         horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
         matrice.afficher(fenetre,520);
-    
+        
     }
     
     fenetre.display();      

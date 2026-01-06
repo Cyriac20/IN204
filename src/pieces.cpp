@@ -15,7 +15,7 @@ void Piece::effacer(grille& matrice){
     }
 }
 
-void Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
+bool Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
     std::array<std::array<int,2>,4> nouvelle_position = position;
 
     effacer(matrice);
@@ -32,7 +32,7 @@ void Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
             } 
 
             else{ apparition(matrice); //s'il y a un emplacement qui n'est pas dispo on return et in remet la pièce là ou elle était
-                return; }
+                return 0; }
         }
         break;
         case sf::Keyboard::Key::Right :
@@ -46,7 +46,7 @@ void Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
                 } 
 
                 else{ apparition(matrice);
-                    return; }
+                    return 0; }
             }
             break;
         case sf::Keyboard::Key::Down :
@@ -60,13 +60,14 @@ void Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
                 } 
 
                 else{apparition(matrice); 
-                    return; }
+                    return 0; }
             }
             break;
     }
     
     position = nouvelle_position;  // Appliquer la nouvelle position
     apparition(matrice);
+    return 1;
     
 
 }
@@ -291,4 +292,13 @@ std::unique_ptr<Piece> piece_aleatoire(){
     }
     return nullptr;
 
+}
+
+bool Piece::gravite(sf::Clock& horloge, grille& matrice){
+
+    if (horloge.getElapsedTime().asSeconds() > 1.f){
+        horloge.restart();
+        return mouvement(matrice, sf::Keyboard::Key::Down);
+    }
+    return 1;
 }

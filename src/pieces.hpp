@@ -15,11 +15,11 @@ class Piece {
 
     public:
         std::array<std::array<int,2>,4> position;
-        
+        bool gravite(sf::Clock& horloge, grille& matrice);
         void apparition(grille& matrice);
         void effacer(grille& matrice);
         virtual ~Piece() = default; //évite les fuites mémoires
-        void mouvement(grille& matrice, sf::Keyboard::Key touche);
+        bool mouvement(grille& matrice, sf::Keyboard::Key touche);
         virtual void rotation(grille& matrice) = 0; //indique que la rotation des pièces est propre à chaque pièce
 
 };
@@ -94,4 +94,5 @@ public:
 };
 
 std::unique_ptr<Piece> piece_aleatoire();
+
 #endif
