@@ -36,11 +36,38 @@ int grille::valeur(int i, int j){
 
     
 
-void grille::ligne_complete(int i){
-        int somme = std::accumulate(matrice[i].begin(), matrice[i].end(),0);
-        if (somme == 10){
-            matrice[i] = {0,0,0,0,0,0,0,0,0,0};
+std::array<int,4> grille::ligne_complete(){
+    std::array<int,4> lignes = {-1, -1, -1, -1};
+    int nb = 0;
+    for (int i = 0; i < 22; ++i){
+        for (int j = 0; j < 10; ++j){
+            if (matrice[i][j] == 0){ break; }
+
+            else if (j == 9)  {
+                for (int k = 0; k < 10; k++){
+                    matrice[i][k] = 0;
+                }
+                lignes[nb] = i; 
+                nb++;
+            }      
         }
+    }
+    return lignes;
+}
+
+void grille::actualisation(std::array<int,4> lignes){
+    for (int n = 0; n < 4; ++n){
+        if (lignes[n] > 0){
+            int k = lignes[n];
+            for (int i = k; i >= 0; --i){
+                for (int j = 0; j < 10; ++j){
+                    if (i > 0){
+                        matrice[i][j] = matrice[i-1][j];
+                    }
+                }
+            }
+        }
+    }
 }
 
 void grille::set(int i, int j, int valeur){

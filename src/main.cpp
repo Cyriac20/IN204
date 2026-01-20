@@ -3,6 +3,9 @@
 #include "horloge.hpp"
 
 #include <iostream>
+#include <chrono>
+#include <thread>
+
 
 
 enum class GameState {
@@ -11,6 +14,9 @@ enum class GameState {
     OPTIONS,
     SCORES
 };
+
+void dessiner(GameState etat_courant, sf::RenderWindow fenetre, int largeur, int hauteur, grille matrice, Horloge horloge, Menu Menu );
+
 
 int main(){
 
@@ -114,15 +120,40 @@ int main(){
 
     if (etat_courant == GameState::PLAYING){
         if(!piece->gravite(horloge_gravite, matrice)){
+            std::array<int,4> lignes = matrice.ligne_complete();
+            if (lignes[0] > -1){
+                
+                matrice.actualisation(lignes);
+            }
             piece = piece_aleatoire();
             piece->apparition(matrice);
-        };
+        }
         horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
-        matrice.afficher(fenetre,520);
-        
+        matrice.afficher(fenetre, 520);
+                
     }
     
     fenetre.display();      
     }
     
 }
+
+/*
+void dessiner(GameState etat_courant, sf::RenderWindow fenetre, int largeur, int hauteur, grille matrice, Horloge horloge, Menu menu ){
+    fenetre.clear(sf::Color(20,20,20));
+
+    switch(etat_courant) {
+        case GameState::MENU : 
+        menu.dessiner(fenetre);
+        break;
+
+        case GameState::PLAYING :
+        horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
+        matrice.afficher(fenetre,520);
+        break;
+
+    }
+    fenetre.display();
+    
+}
+*/

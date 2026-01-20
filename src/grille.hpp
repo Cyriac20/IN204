@@ -16,7 +16,9 @@ public:
     int valeur(int i , int j);
     void set(int ligne, int colonne, int valeur);
     
-    void ligne_complete(int i);
+    
+    std::array<int,4> ligne_complete();
+    void actualisation(std::array<int,4>);
     bool emplacement_disponible(std::array<std::array<int,2>,4> position);
     
 };
