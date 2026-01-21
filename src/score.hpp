@@ -14,10 +14,12 @@ class Score {
 
     public:
     Score();
-    void calcul(std::array<int,4> lignes);
+    int combo(std::array<int,4> lignes);
+    void calcul(int nb_lignes);
     void ajout(int points);
     void afficher(sf::RenderWindow& fenetre);
     int niveau;
+    int nb_ligne_casse; // pour savoir quand on passe au niveau suivant
 
 };
 

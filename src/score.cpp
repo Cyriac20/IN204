@@ -2,7 +2,8 @@
 
 Score::Score(){
     score = 0;
-    niveau = 0;
+    niveau = 0; 
+    nb_ligne_casse = 0;
     if (!police.openFromFile("../src/res/poppins1.ttf")) {
         std::cerr << "Erreur : police non trouvée" << std::endl;
     }
@@ -30,14 +31,19 @@ void Score::ajout(int points){
     actualisation();
 }
 
-void Score::calcul(std::array<int,4> lignes){
+int Score::combo(std::array<int,4> lignes){
     int s = 0;
     for (int ligne : lignes){
         if (ligne > -1){
             s++;
         }
-    } 
-    switch(s){
+    }
+    return s;
+}
+
+void Score::calcul(int nb_lignes){
+    
+    switch(nb_lignes){
         case 1 : 
             ajout(40 * (niveau + 1));
             break;

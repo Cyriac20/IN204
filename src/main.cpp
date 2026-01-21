@@ -42,9 +42,7 @@ int main(){
     
     bool clicked = false;
     std::unique_ptr<Piece> piece = piece_aleatoire();
-
     while (fenetre.isOpen()){ 
-
 
         if (etat_courant == GameState::MENU){
             sf::Vector2i pixelPos = sf::Mouse::getPosition(fenetre);
@@ -126,7 +124,10 @@ int main(){
             if (lignes[0] > -1){
                 
                 matrice.actualisation(lignes);
-                score.calcul(lignes);
+                score.nb_ligne_casse += score.combo(lignes);
+                score.niveau = score.nb_ligne_casse / 10;
+                score.calcul(score.combo(lignes));
+    
             }
             piece = piece_aleatoire();
             piece->apparition(matrice);
