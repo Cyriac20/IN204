@@ -294,9 +294,9 @@ std::unique_ptr<Piece> piece_aleatoire(){
 
 }
 
-bool Piece::gravite(sf::Clock& horloge, grille& matrice){
-
-    if (horloge.getElapsedTime().asSeconds() > 1.f){
+bool Piece::gravite(sf::Clock& horloge, grille& matrice, float niveau){
+    float limite = (48-5*niveau)/60;
+    if (horloge.getElapsedTime().asSeconds() > limite){
         horloge.restart();
         return mouvement(matrice, sf::Keyboard::Key::Down);
     }

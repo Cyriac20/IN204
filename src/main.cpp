@@ -1,10 +1,12 @@
 #include "pieces.hpp"
 #include "menu.hpp"
 #include "horloge.hpp"
+#include "score.hpp"
 
 #include <iostream>
 #include <chrono>
 #include <thread>
+
 
 
 
@@ -36,7 +38,7 @@ int main(){
     sf::Clock horloge_gravite;
     
     grille matrice;
-
+    Score score;
     
     bool clicked = false;
     std::unique_ptr<Piece> piece = piece_aleatoire();
@@ -119,17 +121,19 @@ int main(){
     }
 
     if (etat_courant == GameState::PLAYING){
-        if(!piece->gravite(horloge_gravite, matrice)){
+        if(!piece->gravite(horloge_gravite, matrice, score.niveau)){
             std::array<int,4> lignes = matrice.ligne_complete();
             if (lignes[0] > -1){
                 
                 matrice.actualisation(lignes);
+                score.calcul(lignes);
             }
             piece = piece_aleatoire();
             piece->apparition(matrice);
         }
         horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
         matrice.afficher(fenetre, 520);
+        score.afficher(fenetre);
                 
     }
     

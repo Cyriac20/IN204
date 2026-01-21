@@ -15,7 +15,7 @@ class Piece {
 
     public:
         std::array<std::array<int,2>,4> position;
-        bool gravite(sf::Clock& horloge, grille& matrice);
+        bool gravite(sf::Clock& horloge, grille& matrice, float niveau);
         void apparition(grille& matrice);
         void effacer(grille& matrice);
         virtual ~Piece() = default; //évite les fuites mémoires
