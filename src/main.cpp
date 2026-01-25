@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <SFML/Graphics.hpp> 
 
 
 
@@ -14,8 +15,12 @@ enum class GameState {
     MENU,
     PLAYING,
     OPTIONS,
-    SCORES
+    SCORES,
+    GAME_OVER
 };
+
+
+
 
 void dessiner(GameState etat_courant, sf::RenderWindow fenetre, int largeur, int hauteur, grille matrice, Horloge horloge, Menu Menu );
 
@@ -42,6 +47,17 @@ int main(){
     
     bool clicked = false;
     std::unique_ptr<Piece> piece = piece_aleatoire();
+
+    //Texte pour le "Game Over"
+    sf::Font police;
+
+    sf::Text texte_gameover(police);
+
+    texte_gameover.setString("Game Over");   // définir le texte
+    texte_gameover.setCharacterSize(80);     // taille du texte
+    texte_gameover.setFillColor(sf::Color::Red);
+
+
     while (fenetre.isOpen()){ 
 
         if (etat_courant == GameState::MENU){
@@ -90,9 +106,20 @@ int main(){
                 auto toucheEvent = event->getIf<sf::Event::KeyPressed>();
 
                 
-                if (toucheEvent->code == sf::Keyboard::Key::Enter){
-                   etat_courant = GameState::PLAYING;
+                if (toucheEvent->code == sf::Keyboard::Key::Enter){ //Presser Enter démarre (ou redémarre) le jeu
+                    if (etat_courant == GameState::GAME_OVER){
+                        matrice = grille(); // reset grille
+                        score = Score();    // reset score
+                        piece = piece_aleatoire(); 
+                        horloge.restart();
+                        horloge_gravite.restart();
+                        etat_courant = GameState::PLAYING; 
+                    } else if (etat_courant == GameState::MENU){
+                        etat_courant = GameState::PLAYING;
+                    }
                 }
+
+
                 if (toucheEvent->code == sf::Keyboard::Key::Escape){
                    etat_courant = GameState::MENU;
                 }
@@ -130,13 +157,27 @@ int main(){
     
             }
             piece = piece_aleatoire();
-            piece->apparition(matrice);
+
+            //Gestion de l'apparation des pièces : si on a plus la place pour une nouvelle pièce : Game Over
+            if (!matrice.emplacement_disponible(piece->position)){
+                    etat_courant = GameState::GAME_OVER;
+                } else {
+                    piece->apparition(matrice);
+                }
         }
         horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
         matrice.afficher(fenetre, 520);
         score.afficher(fenetre);
                 
     }
+
+    else if (etat_courant == GameState::GAME_OVER){
+            fenetre.clear(sf::Color::Black);
+            fenetre.draw(texte_gameover);
+            score.afficher(fenetre);
+            fenetre.display();
+            continue; // on skip tout le reste de la boucle
+        }
     
     fenetre.display();      
     }

@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <array>
+#include <optional>
 
 class Score {
     private :
