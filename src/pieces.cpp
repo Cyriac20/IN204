@@ -295,7 +295,14 @@ std::unique_ptr<Piece> piece_aleatoire(){
 }
 
 bool Piece::gravite(sf::Clock& horloge, grille& matrice, float niveau){
-    float limite = (48-5*niveau)/60;
+    //Limite le niveau à un entier entre 0 et 15
+    int niveau_effectif = (int)niveau;
+    if (niveau_effectif < 0) niveau_effectif = 0;
+    if (niveau_effectif > 15) niveau_effectif = 15; 
+    float limite = 0.8f - 0.05f * niveau_effectif; 
+    //sécurité
+    if (limite < 0.02f)
+        limite = 0.02f;
     if (horloge.getElapsedTime().asSeconds() > limite){
         horloge.restart();
         return mouvement(matrice, sf::Keyboard::Key::Down);
