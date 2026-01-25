@@ -19,9 +19,27 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
         options.push_back(texte);
     }
 
+    texte_gameover.emplace(police);
+    texte_gameover->setString("Game Over");
+    texte_gameover->setCharacterSize(80);
+    texte_gameover->setFillColor(sf::Color::Red);
+
+    texte_instruction.emplace(police);
+    texte_instruction->setString("<-  ->  choisir | Entree  valider");
+    texte_instruction->setCharacterSize(30);
+    texte_instruction->setFillColor(sf::Color(180,180,180));
+
+    texte_niveau.emplace(police);
+    texte_niveau->setCharacterSize(60);
+    texte_niveau->setFillColor(sf::Color::White);
+
 }
 
 bool Menu::loadBackground(const std::string& filename, float largeur, float hauteur) {
+
+    texte_instruction->setPosition(sf::Vector2f(largeur / 2.f - 220.f, hauteur / 2.f));
+    texte_niveau->setPosition(sf::Vector2f(largeur / 2.f - 140.f, hauteur / 2.f - 80.f));
+    texte_gameover->setPosition(sf::Vector2f(largeur / 2.f - 200.f, hauteur / 2.f - 80.f));
 
     fond_ecran_texture = std::make_unique<sf::Texture>();
     if (fond_ecran_texture->loadFromFile(filename)){
@@ -37,12 +55,23 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
 
 }
 
-void Menu::dessiner(sf::RenderWindow& fenetre) {
+void Menu::afficher_menu(sf::RenderWindow& fenetre) {
     fenetre.draw(*fond_ecran_sprite);
 
     for (auto& option : options) {
         fenetre.draw(option);
     }
+}
+
+void Menu::afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi){
+    texte_niveau->setString("Niveau : " + std::to_string(niveau_choisi));
+    fenetre.draw(*texte_instruction);
+    fenetre.draw(*texte_niveau);
+}
+
+void Menu::afficher_fin(sf::RenderWindow& fenetre){
+    
+    fenetre.draw(*texte_gameover);
 }
 
 void Menu::mouvement_souris(const sf::Vector2f& sourisPos, bool clicked) {

@@ -1,22 +1,3 @@
-/*
-void dessiner(GameState etat_courant, sf::RenderWindow fenetre, int largeur, int hauteur, grille matrice, Horloge horloge, Menu menu ){
-    fenetre.clear(sf::Color(20,20,20));
-
-    switch(etat_courant) {
-        case GameState::MENU : 
-        menu.dessiner(fenetre);
-        break;
-
-        case GameState::PLAYING :
-        horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
-        matrice.afficher(fenetre,520);
-        break;
-
-    }
-    fenetre.display();
-    
-}
-*/
 
 
 #include "pieces.hpp"
@@ -38,7 +19,7 @@ enum class GameState {
     GAME_OVER
 };
 
-void dessiner(GameState etat_courant, sf::RenderWindow fenetre, int largeur, int hauteur, grille matrice, Horloge horloge, Menu Menu );
+
 
 int main(){
 
@@ -63,28 +44,11 @@ int main(){
     bool clicked = false;
     std::unique_ptr<Piece> piece = piece_aleatoire();
 
-    sf::Font police;
-    if (!police.openFromFile("../src/res/poppins1.ttf")) {
-        std::cerr << "Erreur : police non trouvée" << std::endl;
-    }
-
-    sf::Text texte_gameover(police);
-    texte_gameover.setString("Game Over");
-    texte_gameover.setCharacterSize(80);
-    texte_gameover.setFillColor(sf::Color::Red);
-
-    sf::Text texte_niveau(police);
-    texte_niveau.setCharacterSize(60);
-    texte_niveau.setFillColor(sf::Color::White);
-
-    sf::Text texte_instruction(police);
-    texte_instruction.setString("← →  choisir | Entrée  valider");
-    texte_instruction.setCharacterSize(30);
-    texte_instruction.setFillColor(sf::Color(180,180,180));
+    
 
     auto reset_jeu = [&](){
         matrice = grille();
-        score = Score();
+        score.reset();
         niveau_choisi = 0;
         piece = piece_aleatoire();
         piece->apparition(matrice);
@@ -135,8 +99,9 @@ int main(){
 
                     if (toucheEvent->code == sf::Keyboard::Key::Enter){
                         matrice = grille();
-                        score = Score();
+                        score.reset();
                         score.niveau = niveau_choisi;
+                        score.actualisation();
                         score.nb_ligne_casse = niveau_choisi * 10;
                         horloge.restart();
                         horloge_gravite.restart();
@@ -171,16 +136,11 @@ int main(){
         fenetre.clear(sf::Color(20,20,20));
 
         if (etat_courant == GameState::MENU){
-            menu.dessiner(fenetre);
+            menu.afficher_menu(fenetre);
         }
 
         else if (etat_courant == GameState::LEVEL_SELECT){
-            texte_niveau.setString("Niveau : " + std::to_string(niveau_choisi));
-            texte_niveau.setPosition(sf::Vector2f(largeur / 2.f - 140.f, hauteur / 2.f - 80.f));
-            texte_instruction.setPosition(sf::Vector2f(largeur / 2.f - 220.f, hauteur / 2.f));
-
-            fenetre.draw(texte_niveau);
-            fenetre.draw(texte_instruction);
+            menu.afficher_selection(fenetre, niveau_choisi);
         }
 
         else if (etat_courant == GameState::PLAYING){
@@ -197,9 +157,9 @@ int main(){
                 piece = piece_aleatoire();
 
                 if (!matrice.emplacement_disponible(piece->position))
-                    etat_courant = GameState::GAME_OVER;
+                    {etat_courant = GameState::GAME_OVER;}
                 else
-                    piece->apparition(matrice);
+                    {piece->apparition(matrice);}
             }
 
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
@@ -209,7 +169,7 @@ int main(){
 
         else if (etat_courant == GameState::GAME_OVER){
             fenetre.clear(sf::Color::Black);
-            fenetre.draw(texte_gameover);
+            menu.afficher_fin(fenetre);
             score.afficher(fenetre);
         }
 

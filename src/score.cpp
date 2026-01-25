@@ -59,6 +59,13 @@ void Score::calcul(int nb_lignes){
     }
 }
 
+void Score::reset(){
+    score = 0;
+    niveau = 0; 
+    nb_ligne_casse = 0;
+    actualisation();
+}
+
 void Score::afficher(sf::RenderWindow& fenetre){
     fenetre.draw(*score_texte);
     fenetre.draw(*niveau_texte);
