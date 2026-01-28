@@ -11,7 +11,7 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
     }
 
     // Liste des options principales affichées dans le menu
-    std::vector<std::string> items = {"Jouer", "Options", "Scores", "Quitter"};
+    std::vector<std::string> items = {"Jouer", "Commandes", "Quitter"};
 
      // Création et placement de chaque option du menu
     for (size_t i = 0; i < items.size(); i++){
@@ -42,6 +42,24 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
     texte_niveau->setCharacterSize(60);
     texte_niveau->setFillColor(sf::Color::White);
 
+    // Textes pour l'écran des commandes
+    texte_titre_commandes.emplace(police);
+    texte_titre_commandes->setString("Commandes");
+    texte_titre_commandes->setCharacterSize(60);
+    texte_titre_commandes->setFillColor(sf::Color::White);
+
+    texte_commandes.emplace(police);
+    texte_commandes->setString(
+        "Fleche GAUCHE  :  Deplacer a gauche\n\n"
+        "Fleche DROITE  :  Deplacer a droite\n\n"
+        "Fleche BAS     :  Descente rapide\n\n"
+        "Fleche HAUT    :  Rotation\n\n"
+        "ENTREE         :  Valider\n\n"
+        "ECHAP          :  Retour au menu"
+    );
+    texte_commandes->setCharacterSize(30);
+    texte_commandes->setFillColor(sf::Color(200,200,200));
+
 }
 
 
@@ -51,6 +69,8 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
     texte_instruction->setPosition(sf::Vector2f(largeur / 2.f - 220.f, hauteur / 2.f));
     texte_niveau->setPosition(sf::Vector2f(largeur / 2.f - 140.f, hauteur / 2.f - 80.f));
     texte_gameover->setPosition(sf::Vector2f(largeur / 2.f - 200.f, hauteur / 2.f - 80.f));
+    texte_titre_commandes->setPosition(sf::Vector2f(largeur / 2.f - 150.f, hauteur / 4.f));
+    texte_commandes->setPosition(sf::Vector2f(largeur / 2.f - 250.f, hauteur / 2.f - 100.f));
 
     fond_ecran_texture = std::make_unique<sf::Texture>();
     if (fond_ecran_texture->loadFromFile(filename)){
@@ -75,6 +95,13 @@ void Menu::afficher_menu(sf::RenderWindow& fenetre) {
         fenetre.draw(option);
     }
 }
+
+// Fonction d'affichage de la fenêtre de commandes
+void Menu::afficher_commandes(sf::RenderWindow& fenetre){
+    fenetre.draw(*texte_titre_commandes);
+    fenetre.draw(*texte_commandes);
+}
+
 
 // Fonction d'affichage du menu de selection de niveau en amont de la partie
 void Menu::afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi){

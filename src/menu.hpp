@@ -10,9 +10,13 @@ class Menu {
     private: 
         sf::Font police;
         std::vector<sf::Text> options;
+
         std::optional<sf::Text> texte_instruction;
         std::optional<sf::Text> texte_gameover;
         std::optional<sf::Text> texte_niveau;
+        std::optional<sf::Text> texte_titre_commandes;
+        std::optional<sf::Text> texte_commandes;
+
         int Index;
         int index_souris;
 
@@ -23,12 +27,17 @@ class Menu {
     public :
 
         Menu(float largeur, float hauteur);
+        
         void mouvement_souris(const sf::Vector2f& sourisPos, bool clicked);
         int clic_souris(const sf::Vector2f& sourisPos );
-        void afficher_menu(sf::RenderWindow& fenetre);
+
         bool loadBackground(const std::string& filename, float largeur, float hauteur);
+
+        void afficher_menu(sf::RenderWindow& fenetre);
+        void afficher_commandes(sf::RenderWindow& fenetre);
         void afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi);
         void afficher_fin(sf::RenderWindow& fenetre);
+
 
 };
 

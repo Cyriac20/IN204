@@ -14,8 +14,7 @@ enum class GameState {
     MENU,
     LEVEL_SELECT,
     PLAYING,
-    OPTIONS,
-    SCORES,
+    COMMANDES,
     GAME_OVER
 };
 
@@ -90,7 +89,11 @@ int main(){
 
                     if (clic == 0)
                         etat_courant = GameState::LEVEL_SELECT;
-                    if (clic == 3)
+                    
+                    if (clic == 1)
+                        etat_courant = GameState::COMMANDES;
+
+                    if (clic == 2)
                         fenetre.close();
                 }
             }
@@ -163,6 +166,10 @@ int main(){
 
         else if (etat_courant == GameState::LEVEL_SELECT){
             menu.afficher_selection(fenetre, niveau_choisi);
+        }
+
+        else if (etat_courant == GameState::COMMANDES){
+            menu.afficher_commandes(fenetre);
         }
 
         else if (etat_courant == GameState::PLAYING){
