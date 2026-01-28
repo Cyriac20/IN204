@@ -1,13 +1,19 @@
 #include "menu.hpp"
 #include <iostream>
 
+
+// Constructeur du menu (permet de préparer tout ce qui sera affiché dans le menu)
 Menu::Menu(float largeur, float hauteur) : Index(0) {
+
+    // Chargement de la police utilisée pour tous les textes du menu
     if (!police.openFromFile("../src/res/poppins1.ttf")) {
         std::cerr << "Erreur : police non trouvée" << std::endl;
     }
 
+    // Liste des options principales affichées dans le menu
     std::vector<std::string> items = {"Jouer", "Options", "Scores", "Quitter"};
 
+     // Création et placement de chaque option du menu
     for (size_t i = 0; i < items.size(); i++){
         sf::Text texte(police, items[i], 50);
         texte.setFillColor(sf::Color::White);
@@ -19,22 +25,27 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
         options.push_back(texte);
     }
 
+    // Texte affiché en cas de défaite (écran Game Over)
     texte_gameover.emplace(police);
     texte_gameover->setString("Game Over");
     texte_gameover->setCharacterSize(80);
     texte_gameover->setFillColor(sf::Color::Red);
 
+    // Texte d'instructions pour la sélection du niveau
     texte_instruction.emplace(police);
     texte_instruction->setString("<-  ->  choisir | Entree  valider");
     texte_instruction->setCharacterSize(30);
     texte_instruction->setFillColor(sf::Color(180,180,180));
 
+    // Texte utilisé pour afficher le niveau sélectionné dans l'écran de sélection du niveau
     texte_niveau.emplace(police);
     texte_niveau->setCharacterSize(60);
     texte_niveau->setFillColor(sf::Color::White);
 
 }
 
+
+//Fonction servant à charger et configurer l’image de fond du menu
 bool Menu::loadBackground(const std::string& filename, float largeur, float hauteur) {
 
     texte_instruction->setPosition(sf::Vector2f(largeur / 2.f - 220.f, hauteur / 2.f));
@@ -55,6 +66,8 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
 
 }
 
+
+// Fonction d'affichage du menu principal
 void Menu::afficher_menu(sf::RenderWindow& fenetre) {
     fenetre.draw(*fond_ecran_sprite);
 
@@ -63,17 +76,20 @@ void Menu::afficher_menu(sf::RenderWindow& fenetre) {
     }
 }
 
+// Fonction d'affichage du menu de selection de niveau en amont de la partie
 void Menu::afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi){
     texte_niveau->setString("Niveau : " + std::to_string(niveau_choisi));
     fenetre.draw(*texte_instruction);
     fenetre.draw(*texte_niveau);
 }
 
+// Fonction d'affichage du Game Over en cas de fin de partie
 void Menu::afficher_fin(sf::RenderWindow& fenetre){
     
     fenetre.draw(*texte_gameover);
 }
 
+// Fonction servant à gérer l’interaction dynamique de la souris avec le menu
 void Menu::mouvement_souris(const sf::Vector2f& sourisPos, bool clicked) {
     int old_index_souris = index_souris;
     index_souris = -1;
@@ -99,7 +115,7 @@ void Menu::mouvement_souris(const sf::Vector2f& sourisPos, bool clicked) {
 
 }    
 
-
+// Fonction permettant de détecter sur quel bouton du menu le joueur a cliqué
 int Menu::clic_souris(const sf::Vector2f& sourisPos) {
     for (size_t i = 0; i < options.size(); i++) {
         sf::FloatRect bornes = options[i].getGlobalBounds();

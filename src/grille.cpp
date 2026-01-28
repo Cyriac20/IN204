@@ -5,6 +5,8 @@
 const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
 };
 
+
+//Définition de la grille : 22 lignes et 10 colonnes 
 grille::grille() : matrice(
     {{   
         {0,0,0,0,0,0,0,0,0,0},
@@ -30,12 +32,14 @@ grille::grille() : matrice(
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0} }}) {}; 
 
+
+// Fonction permettant d'extraire facilement les valeurs des emplacements de la grille
 int grille::valeur(int i, int j){
     return matrice[i][j];
 }
 
     
-
+// Fonction de repérage des lignes complètes (en vue de leur destruction)
 std::array<int,4> grille::ligne_complete(){
     std::array<int,4> lignes = {-1, -1, -1, -1};
     int nb = 0;
@@ -55,6 +59,8 @@ std::array<int,4> grille::ligne_complete(){
     return lignes;
 }
 
+
+// Fonction d'actualisation de la grille après destruction d'une ligne
 void grille::actualisation(std::array<int,4> lignes){
     for (int n = 0; n < 4; ++n){
         if (lignes[n] > 0){
@@ -70,11 +76,14 @@ void grille::actualisation(std::array<int,4> lignes){
     }
 }
 
+// Fonction de modification d'une case de la grille
 void grille::set(int i, int j, int valeur){
     matrice[i][j] = valeur;
 
 }
 
+
+// Fonction d'affichage de la grille
 void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
 
     sf::VertexArray sommets(sf::PrimitiveType::Triangles);
@@ -127,7 +136,7 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
 
 
 
-
+// Fonction vérifiant la disponibilité d'un emplacement : permet de s'assurer de toujours rester dans les limites de la grille 
 bool grille::emplacement_disponible(std::array<std::array<int,2>,4> position){
 
     for (std::array<int,2> coord : position){

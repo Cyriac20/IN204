@@ -1,5 +1,3 @@
-
-
 #include "pieces.hpp"
 #include "menu.hpp"
 #include "horloge.hpp"
@@ -10,6 +8,8 @@
 #include <thread>
 #include <SFML/Graphics.hpp> 
 
+
+// États possibles du jeu (menu, sélection du niveau, partie, fin...)
 enum class GameState {
     MENU,
     LEVEL_SELECT,
@@ -23,17 +23,23 @@ enum class GameState {
 
 int main(){
 
+    // Création de la fenêtre en plein écran selon la résolution du bureau
     auto bureau = sf::VideoMode::getDesktopMode();
     sf::RenderWindow fenetre(bureau, "Tetris", sf::State::Windowed);
     fenetre.setFramerateLimit(60);
 
+    // État initial
     GameState etat_courant = GameState::MENU;
+
+    // Dimensions de la fenêtre utilisées pour placer les éléments
     int largeur = bureau.size.x;
     int hauteur = bureau.size.y;
 
+    // Initialisation du menu et chargement de son image de fond
     Menu menu(largeur, hauteur);
     menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
 
+    // Initialisation d'éléments (horloge, grille, score ...)
     Horloge horloge;
     sf::Clock horloge_gravite;
     
@@ -42,10 +48,12 @@ int main(){
     int niveau_choisi = 0;
     
     bool clicked = false;
+
+    // Génération de la première pièce aléatoire
     std::unique_ptr<Piece> piece = piece_aleatoire();
 
     
-
+    // Fonction permettant de réinitialiser complètement la partie (après une défaite par exemple)
     auto reset_jeu = [&](){
         matrice = grille();
         score.reset();
@@ -56,6 +64,8 @@ int main(){
         horloge_gravite.restart();
     };
 
+
+    // Boucle principale du jeu
     while (fenetre.isOpen()){ 
 
         if (etat_courant == GameState::MENU){
@@ -64,6 +74,7 @@ int main(){
             menu.mouvement_souris(globalPos, clicked);
         }
         
+        // Boucle de gestion des événements
         while (const std::optional event = fenetre.pollEvent()){
 
             if (event->is<sf::Event::MouseButtonPressed>())
@@ -87,9 +98,11 @@ int main(){
             if (event->is<sf::Event::Closed>())
                 fenetre.close();
             
+            // Gestion des touches clavier
             if (event->is<sf::Event::KeyPressed>()){
                 auto toucheEvent = event->getIf<sf::Event::KeyPressed>();
 
+                // Sélection du niveau
                 if (etat_courant == GameState::LEVEL_SELECT){
                     if (toucheEvent->code == sf::Keyboard::Key::Left && niveau_choisi > 0)
                         niveau_choisi--;
@@ -97,9 +110,12 @@ int main(){
                     if (toucheEvent->code == sf::Keyboard::Key::Right && niveau_choisi < 15)
                         niveau_choisi++;
 
+                    // Validation du niveau choisi et début de la partie
                     if (toucheEvent->code == sf::Keyboard::Key::Enter){
                         matrice = grille();
                         score.reset();
+
+                        // Initialisation du score et du niveau
                         score.niveau = niveau_choisi;
                         score.actualisation();
                         score.nb_ligne_casse = niveau_choisi * 10;
@@ -109,21 +125,25 @@ int main(){
                     }
                 }
 
+                // Configuration de la touche Echap (retour au menu)
                 if (toucheEvent->code == sf::Keyboard::Key::Escape){
                     reset_jeu();
                     etat_courant = GameState::MENU;
                 }
                 
+                // Touches pendant la partie 
                 if (etat_courant == GameState::PLAYING){
                     auto touche = toucheEvent->code;
 
                     if (touche == sf::Keyboard::Key::Left || touche == sf::Keyboard::Key::Right || touche == sf::Keyboard::Key::Down)
                         piece->mouvement(matrice, touche);
 
+                    // Rotation de la pièce en cliquant vers le haut
                     if (touche == sf::Keyboard::Key::Up)
                         piece->rotation(matrice);
                 }
 
+                // On peut relancer une partie en appuyant sur Entrer
                 if (etat_courant == GameState::GAME_OVER){
                     if (toucheEvent->code == sf::Keyboard::Key::Enter){
                         reset_jeu();
@@ -135,6 +155,8 @@ int main(){
 
         fenetre.clear(sf::Color(20,20,20));
 
+
+        // Affichage selon l’état actuel du jeu
         if (etat_courant == GameState::MENU){
             menu.afficher_menu(fenetre);
         }
@@ -144,29 +166,38 @@ int main(){
         }
 
         else if (etat_courant == GameState::PLAYING){
-            if(!piece->gravite(horloge_gravite, matrice, score.niveau)){
-                std::array<int,4> lignes = matrice.ligne_complete();
 
+            // Gestion de la gravité
+            if(!piece->gravite(horloge_gravite, matrice, score.niveau)){
+                std::array<int,4> lignes = matrice.ligne_complete(); // Vérifie si des lignes sont complètes
+
+                //Met à jour la grille si une ligne au moins est complète
                 if (lignes[0] > -1){
                     matrice.actualisation(lignes);
+
+                    // MAJ du score
                     score.nb_ligne_casse += score.combo(lignes);
                     score.niveau = score.nb_ligne_casse / 10;
                     score.calcul(score.combo(lignes));
                 }
 
+                // Génération d’une nouvelle pièce
                 piece = piece_aleatoire();
 
+                // Game Over si la pièce ne peut pas apparaître
                 if (!matrice.emplacement_disponible(piece->position))
                     {etat_courant = GameState::GAME_OVER;}
                 else
                     {piece->apparition(matrice);}
             }
 
+            // Affichages d'éléments
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
             matrice.afficher(fenetre, 520);
             score.afficher(fenetre);
         }
 
+        // Affichage du score et du Game Over lors de la défaite
         else if (etat_courant == GameState::GAME_OVER){
             fenetre.clear(sf::Color::Black);
             menu.afficher_fin(fenetre);

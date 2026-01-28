@@ -3,18 +3,23 @@
 
 Piece::Piece() {};
 
+
+// Fonction d'apparition d'une pièce en haut de la grille
 void Piece::apparition(grille& matrice){
     for (std::array<int,2> coord : position){
         matrice.set(coord[0], coord[1], id);
     }
 }
 
+// Fonction d'effacement d'une pièce
 void Piece::effacer(grille& matrice){
     for (std::array<int,2> coord : position){
         matrice.set(coord[0], coord[1], 0); 
     }
 }
 
+
+// Fonction gérant les mouvements verticaux et horizontaux des pièces
 bool Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
     std::array<std::array<int,2>,4> nouvelle_position = position;
 
@@ -31,7 +36,7 @@ bool Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
                 nouvelle_position[k][1] = j-1;
             } 
 
-            else{ apparition(matrice); //s'il y a un emplacement qui n'est pas dispo on return et in remet la pièce là ou elle était
+            else{ apparition(matrice); //s'il y a un emplacement qui n'est pas dispo on return et on remet la pièce là ou elle était
                 return 0; }
         }
         break;
@@ -97,6 +102,7 @@ PieceI::PieceI(){
     id = 2;
 }
 
+//Fonction de rotation de la pièce
 void PieceI::rotation(grille& matrice){
     std::array<std::array<int,2>,4> nouvelle_position;
     effacer(matrice);
@@ -268,6 +274,8 @@ void PieceZ::rotation(grille& matrice){
 }
 
 
+
+// Module gérant la génération aléatoire des pièces au fil de la partie
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> distrib(1,7);
@@ -294,6 +302,8 @@ std::unique_ptr<Piece> piece_aleatoire(){
 
 }
 
+
+//Fonction définissant la gravité (descente automatique des pièces), ainsi que la puissance de cette gravité (dépendant du niveau de difficulté choisi)
 bool Piece::gravite(sf::Clock& horloge, grille& matrice, float niveau){
     //Limite le niveau à un entier entre 0 et 15
     int niveau_effectif = (int)niveau;

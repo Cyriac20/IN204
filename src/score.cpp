@@ -1,5 +1,6 @@
 #include "score.hpp"
 
+// Constructeur du score
 Score::Score(){
     score = 0;
     niveau = 0; 
@@ -21,16 +22,22 @@ Score::Score(){
       
 }
 
+
+// Fonction d'actualisation de l'affichage du score et du niveau choisi
 void Score::actualisation(){
     score_texte->setString("Score : " + std::to_string(score) );
     niveau_texte->setString("Niveau : " + std::to_string(niveau) );
 }
 
+
+// Fonction d'incrémentation du score
 void Score::ajout(int points){
     score += points;
     actualisation();
 }
 
+
+// Fonction permettant de détecter lorsque plusieurs lignes sont détruites simultanément 
 int Score::combo(std::array<int,4> lignes){
     int s = 0;
     for (int ligne : lignes){
@@ -41,6 +48,9 @@ int Score::combo(std::array<int,4> lignes){
     return s;
 }
 
+
+
+// Fonction de calcul du score à ajouter en fonction du niveau de difficulté choisi ainsi que du nombre de lignes détruite simultanément
 void Score::calcul(int nb_lignes){
     
     switch(nb_lignes){
@@ -59,6 +69,7 @@ void Score::calcul(int nb_lignes){
     }
 }
 
+// Fonction de reset 
 void Score::reset(){
     score = 0;
     niveau = 0; 
@@ -66,6 +77,7 @@ void Score::reset(){
     actualisation();
 }
 
+// Fonction d'affichage du score et du niveau choisi
 void Score::afficher(sf::RenderWindow& fenetre){
     fenetre.draw(*score_texte);
     fenetre.draw(*niveau_texte);

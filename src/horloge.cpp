@@ -1,6 +1,6 @@
 #include "horloge.hpp"
 
-
+// Fonction d'affichage du temps lors d'une partie
 void Horloge::dessiner_horloge(sf::RenderWindow& fenetre, int largeur , int hauteur){
     
     sf::Text texte(police);     
