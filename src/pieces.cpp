@@ -6,6 +6,7 @@ Piece::Piece() {};
 
 // Fonction d'apparition d'une pièce en haut de la grille
 void Piece::apparition(grille& matrice){
+    assert(position.size() == 4);  // Contrat: toujours 4 blocs
     for (std::array<int,2> coord : position){
         matrice.set(coord[0], coord[1], id);
     }
