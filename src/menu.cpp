@@ -17,7 +17,7 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
     }
 
     // Liste des options principales affichées dans le menu
-    std::vector<std::string> items = {"Jouer", "Commandes", "Quitter"};
+    std::vector<std::string> items = {"JOUER", "COMMANDES", "QUITTER"};
 
 
      // Création et placement de chaque option du menu
@@ -89,7 +89,7 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
 }
 
 
-//Fonction servant à charge et configurer l'image de fond du menu "COMMANDES"
+//Fonction servant à charger et configurer l'image de fond du menu "COMMANDES"
 
 bool Menu::loadCommandesBackground(const std::string& filename, float largeur, float hauteur) {
 
@@ -100,6 +100,24 @@ bool Menu::loadCommandesBackground(const std::string& filename, float largeur, f
         float scaleX = largeur / fond_commandes_texture->getSize().x;
         float scaleY = hauteur / fond_commandes_texture->getSize().y;
         fond_commandes_sprite->setScale(sf::Vector2f(scaleX, scaleY));
+
+        return true;
+    }
+    return false;
+
+}
+
+//Fonction servant à charger et configurer l'image de fond du jeu ("PLAYING")
+
+bool Menu::loadJeuBackground(const std::string& filename, float largeur, float hauteur) {
+
+    fond_jeu_texture = std::make_unique<sf::Texture>();
+    if (fond_jeu_texture->loadFromFile(filename)){
+        fond_jeu_sprite = std::make_unique<sf::Sprite> (*fond_jeu_texture);
+
+        float scaleX = largeur / fond_jeu_texture->getSize().x;
+        float scaleY = hauteur / fond_jeu_texture->getSize().y;
+        fond_jeu_sprite->setScale(sf::Vector2f(scaleX, scaleY));
 
         return true;
     }
@@ -126,6 +144,11 @@ void Menu::afficher_commandes(sf::RenderWindow& fenetre)
     fenetre.draw(*texte_commandes);
 }
 
+// Fonction d'affichage de l'image de fond du jeu
+void Menu::afficher_jeu(sf::RenderWindow& fenetre) {
+    if (fond_jeu_sprite)
+        fenetre.draw(*fond_jeu_sprite);
+}
 
 // Fonction d'affichage du menu de selection de niveau en amont de la partie
 void Menu::afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi){

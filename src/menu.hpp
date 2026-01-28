@@ -25,6 +25,10 @@ class Menu {
         std::unique_ptr<sf::Texture> fond_commandes_texture;
         std::unique_ptr<sf::Sprite> fond_commandes_sprite;
 
+        std::unique_ptr<sf::Texture> fond_jeu_texture;
+        std::unique_ptr<sf::Sprite> fond_jeu_sprite;
+
+
    
 
     public :
@@ -36,9 +40,11 @@ class Menu {
 
         bool loadBackground(const std::string& filename, float largeur, float hauteur);
         bool loadCommandesBackground(const std::string& filename, float largeur, float hauteur);
+        bool loadJeuBackground(const std::string& filename, float largeur, float hauteur);
 
         void afficher_menu(sf::RenderWindow& fenetre);
         void afficher_commandes(sf::RenderWindow& fenetre);
+        void afficher_jeu(sf::RenderWindow& fenetre);
         void afficher_selection(sf::RenderWindow& fenetre, int niveau_choisi);
         void afficher_fin(sf::RenderWindow& fenetre);
 

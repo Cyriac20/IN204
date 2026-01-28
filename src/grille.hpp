@@ -8,7 +8,7 @@
 class grille {
 private:
     std::array<std::array<int,10>, 22> matrice;
-    static constexpr int TAILLE_CASE = 30;
+    static constexpr int TAILLE_CASE = 34;
     
 public:
     grille();

@@ -38,6 +38,7 @@ int main(){
     Menu menu(largeur, hauteur);
     menu.loadBackground("../src/res/menu.png",largeur, hauteur);
     menu.loadCommandesBackground("../src/res/commandes.png", largeur, hauteur);
+    menu.loadJeuBackground("../src/res/jeu.png", largeur, hauteur);
 
     // Initialisation d'éléments (horloge, grille, score ...)
     Horloge horloge;
@@ -199,9 +200,10 @@ int main(){
                     {piece->apparition(matrice);}
             }
 
+            menu.afficher_jeu(fenetre);
             // Affichages d'éléments
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
-            matrice.afficher(fenetre, 520);
+            matrice.afficher(fenetre, 757, 293);
             score.afficher(fenetre);
         }
 

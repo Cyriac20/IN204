@@ -12,12 +12,12 @@ Score::Score(){
     score_texte.emplace(police);
     score_texte->setCharacterSize(24);
     score_texte->setFillColor(sf::Color::White);
-    score_texte->setPosition({10.f, 10.f});
+    score_texte->setPosition({500.f, 410.f});
 
     niveau_texte.emplace(police);
     niveau_texte->setCharacterSize(24);
     niveau_texte->setFillColor(sf::Color::White);
-    niveau_texte->setPosition({10.f, 40.f});
+    niveau_texte->setPosition({500.f, 440.f});
     actualisation();
       
 }
@@ -25,8 +25,8 @@ Score::Score(){
 
 // Fonction d'actualisation de l'affichage du score et du niveau choisi
 void Score::actualisation(){
-    score_texte->setString("Score : " + std::to_string(score) );
-    niveau_texte->setString("Niveau : " + std::to_string(niveau) );
+    score_texte->setString("SCORE : " + std::to_string(score) );
+    niveau_texte->setString("NIVEAU : " + std::to_string(niveau) );
 }
 
 
