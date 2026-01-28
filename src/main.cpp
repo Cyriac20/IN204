@@ -36,7 +36,8 @@ int main(){
 
     // Initialisation du menu et chargement de son image de fond
     Menu menu(largeur, hauteur);
-    menu.loadBackground("../src/res/image.jpg",largeur, hauteur);
+    menu.loadBackground("../src/res/menu.png",largeur, hauteur);
+    menu.loadCommandesBackground("../src/res/commandes.png", largeur, hauteur);
 
     // Initialisation d'éléments (horloge, grille, score ...)
     Horloge horloge;

@@ -5,7 +5,7 @@ Score::Score(){
     score = 0;
     niveau = 0; 
     nb_ligne_casse = 0;
-    if (!police.openFromFile("../src/res/poppins1.ttf")) {
+    if (!police.openFromFile("../src/res/Orbitron-Regular.ttf")) {
         std::cerr << "Erreur : police non trouvée" << std::endl;
     }
     

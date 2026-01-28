@@ -1,26 +1,33 @@
 #include "menu.hpp"
 #include <iostream>
 
+// Palette de couleur pour le menu
+    std::vector<sf::Color> couleurs = {
+        sf::Color(255, 60, 60),   // Rouge
+        sf::Color(255, 220, 60),  // Jaune
+        sf::Color(60, 180, 255)   // Bleu
+    };
 
 // Constructeur du menu (permet de préparer tout ce qui sera affiché dans le menu)
 Menu::Menu(float largeur, float hauteur) : Index(0) {
 
     // Chargement de la police utilisée pour tous les textes du menu
-    if (!police.openFromFile("../src/res/poppins1.ttf")) {
+    if (!police.openFromFile("../src/res/Orbitron-Medium.ttf")) {
         std::cerr << "Erreur : police non trouvée" << std::endl;
     }
 
     // Liste des options principales affichées dans le menu
     std::vector<std::string> items = {"Jouer", "Commandes", "Quitter"};
 
+
      // Création et placement de chaque option du menu
     for (size_t i = 0; i < items.size(); i++){
         sf::Text texte(police, items[i], 50);
-        texte.setFillColor(sf::Color::White);
+        texte.setFillColor(couleurs[i]);
         
         sf::FloatRect textBounds = texte.getLocalBounds();
         texte.setOrigin(sf::Vector2f(textBounds.size.x / 2.f, textBounds.size.y / 2.f));
-        texte.setPosition(sf::Vector2f(largeur / 2.f, hauteur / 2.f + i * 80.f - 120.f));
+        texte.setPosition(sf::Vector2f(largeur / 2.f, hauteur / 2.f + i * 80.f - 30.f));
 
         options.push_back(texte);
     }
@@ -43,10 +50,6 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
     texte_niveau->setFillColor(sf::Color::White);
 
     // Textes pour l'écran des commandes
-    texte_titre_commandes.emplace(police);
-    texte_titre_commandes->setString("Commandes");
-    texte_titre_commandes->setCharacterSize(60);
-    texte_titre_commandes->setFillColor(sf::Color::White);
 
     texte_commandes.emplace(police);
     texte_commandes->setString(
@@ -69,7 +72,6 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
     texte_instruction->setPosition(sf::Vector2f(largeur / 2.f - 220.f, hauteur / 2.f));
     texte_niveau->setPosition(sf::Vector2f(largeur / 2.f - 140.f, hauteur / 2.f - 80.f));
     texte_gameover->setPosition(sf::Vector2f(largeur / 2.f - 200.f, hauteur / 2.f - 80.f));
-    texte_titre_commandes->setPosition(sf::Vector2f(largeur / 2.f - 150.f, hauteur / 4.f));
     texte_commandes->setPosition(sf::Vector2f(largeur / 2.f - 250.f, hauteur / 2.f - 100.f));
 
     fond_ecran_texture = std::make_unique<sf::Texture>();
@@ -87,6 +89,24 @@ bool Menu::loadBackground(const std::string& filename, float largeur, float haut
 }
 
 
+//Fonction servant à charge et configurer l'image de fond du menu "COMMANDES"
+
+bool Menu::loadCommandesBackground(const std::string& filename, float largeur, float hauteur) {
+
+    fond_commandes_texture = std::make_unique<sf::Texture>();
+    if (fond_commandes_texture->loadFromFile(filename)){
+        fond_commandes_sprite = std::make_unique<sf::Sprite> (*fond_commandes_texture);
+
+        float scaleX = largeur / fond_commandes_texture->getSize().x;
+        float scaleY = hauteur / fond_commandes_texture->getSize().y;
+        fond_commandes_sprite->setScale(sf::Vector2f(scaleX, scaleY));
+
+        return true;
+    }
+    return false;
+
+}
+
 // Fonction d'affichage du menu principal
 void Menu::afficher_menu(sf::RenderWindow& fenetre) {
     fenetre.draw(*fond_ecran_sprite);
@@ -97,8 +117,12 @@ void Menu::afficher_menu(sf::RenderWindow& fenetre) {
 }
 
 // Fonction d'affichage de la fenêtre de commandes
-void Menu::afficher_commandes(sf::RenderWindow& fenetre){
-    fenetre.draw(*texte_titre_commandes);
+void Menu::afficher_commandes(sf::RenderWindow& fenetre)
+{
+    if (fond_commandes_sprite)
+        fenetre.draw(*fond_commandes_sprite);
+
+    // Ensuite tu dessines ton texte COMMANDES + les touches
     fenetre.draw(*texte_commandes);
 }
 
@@ -132,11 +156,11 @@ void Menu::mouvement_souris(const sf::Vector2f& sourisPos, bool clicked) {
 
     for (size_t i = 0; i < options.size(); ++i) {
         if (static_cast<int>(i) == index_souris){
-            if (clicked) {options[i].setFillColor(sf::Color::Green);}
-            else {options[i].setFillColor(sf::Color::Red); }
+            if (clicked) {options[i].setFillColor(sf::Color(60, 255, 160));}
+            else {options[i].setFillColor(sf::Color(180, 70, 255)); }
         }
         else {
-            options[i].setFillColor(sf::Color::White);
+            options[i].setFillColor(couleurs[i]);
         }
     }
 

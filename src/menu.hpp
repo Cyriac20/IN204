@@ -14,7 +14,6 @@ class Menu {
         std::optional<sf::Text> texte_instruction;
         std::optional<sf::Text> texte_gameover;
         std::optional<sf::Text> texte_niveau;
-        std::optional<sf::Text> texte_titre_commandes;
         std::optional<sf::Text> texte_commandes;
 
         int Index;
@@ -22,6 +21,10 @@ class Menu {
 
         std::unique_ptr<sf::Texture> fond_ecran_texture;
         std::unique_ptr<sf::Sprite> fond_ecran_sprite;
+
+        std::unique_ptr<sf::Texture> fond_commandes_texture;
+        std::unique_ptr<sf::Sprite> fond_commandes_sprite;
+
    
 
     public :
@@ -32,6 +35,7 @@ class Menu {
         int clic_souris(const sf::Vector2f& sourisPos );
 
         bool loadBackground(const std::string& filename, float largeur, float hauteur);
+        bool loadCommandesBackground(const std::string& filename, float largeur, float hauteur);
 
         void afficher_menu(sf::RenderWindow& fenetre);
         void afficher_commandes(sf::RenderWindow& fenetre);

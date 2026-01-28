@@ -10,7 +10,7 @@ class Horloge : public sf::Clock{
     sf::Font police;
     
     public:
-    Horloge() : sf::Clock() {if (!police.openFromFile("../src/res/poppins1.ttf")) { std::cerr << "Erreur : police non trouvée" << std::endl;};};
+    Horloge() : sf::Clock() {if (!police.openFromFile("../src/res/Orbitron-Regular.ttf")) { std::cerr << "Erreur : police non trouvée" << std::endl;};};
     void dessiner_horloge(sf::RenderWindow& fenetre, int largeur, int hauteur);
     
     
