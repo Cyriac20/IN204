@@ -45,7 +45,7 @@ int main(){
     sf::Clock horloge_gravite;
     
     grille matrice;
-    Score score;
+    Score score(largeur, hauteur);
     int niveau_choisi = 0;
     
     bool clicked = false;
@@ -205,11 +205,11 @@ int main(){
             menu.afficher_jeu(fenetre);
 
             // Affichage de la prochaine pièce
-            nextPiece->afficherPreview(fenetre, 650, 120);
+            nextPiece->afficherPreview(fenetre, largeur/3.1, hauteur/8);
 
             // Affichages d'éléments
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
-            matrice.afficher(fenetre, 757, 293);
+            matrice.afficher(fenetre, largeur/2.53, hauteur/4.1);
             score.afficher(fenetre);
         }
 

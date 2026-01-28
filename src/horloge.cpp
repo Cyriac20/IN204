@@ -9,7 +9,7 @@ void Horloge::dessiner_horloge(sf::RenderWindow& fenetre, int largeur , int haut
     texte.setCharacterSize(20);
     texte.setFillColor(sf::Color::White);
 
-    texte.setPosition(sf::Vector2f(largeur - 450.f, hauteur - 180.f));
+    texte.setPosition(sf::Vector2f(largeur - largeur/4.f, hauteur - hauteur/4.f));
     fenetre.draw(texte);
     
 

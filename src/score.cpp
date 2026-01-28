@@ -1,7 +1,7 @@
 #include "score.hpp"
 
 // Constructeur du score
-Score::Score(){
+Score::Score(float largeur, float hauteur){
     score = 0;
     niveau = 0; 
     nb_ligne_casse = 0;
@@ -12,12 +12,12 @@ Score::Score(){
     score_texte.emplace(police);
     score_texte->setCharacterSize(24);
     score_texte->setFillColor(sf::Color::White);
-    score_texte->setPosition({500.f, 410.f});
+    score_texte->setPosition({largeur/4.f, hauteur/4.f});
 
     niveau_texte.emplace(police);
     niveau_texte->setCharacterSize(24);
     niveau_texte->setFillColor(sf::Color::White);
-    niveau_texte->setPosition({500.f, 440.f});
+    niveau_texte->setPosition({largeur/4.f, hauteur/4.f + 30.f});
     actualisation();
       
 }

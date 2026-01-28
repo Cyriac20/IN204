@@ -15,7 +15,7 @@ class Score {
     
 
     public:
-        Score();
+        Score(float largeur, float hauteur);
         void actualisation();
         int combo(std::array<int,4> lignes);
         void calcul(int nb_lignes);
