@@ -320,3 +320,23 @@ bool Piece::gravite(sf::Clock& horloge, grille& matrice, float niveau){
     }
     return 1;
 }
+
+
+const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
+    };
+
+// Fonction pour afficher une pièce (sert dans l'affichage de la prochaine pièce)
+void Piece::afficherPreview(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE)
+{
+    sf::RectangleShape bloc(sf::Vector2f(TAILLE_CASE - 2, TAILLE_CASE - 2));
+    bloc.setFillColor(couleur[id-1]);
+
+    for (auto& pos : position)
+    {
+        int px = x + (pos[1] + 4) * TAILLE_CASE;
+        int py = y + pos[0] * TAILLE_CASE;
+
+        bloc.setPosition(sf::Vector2f(px, py));
+        fenetre.draw(bloc);
+    }
+}

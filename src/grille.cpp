@@ -3,7 +3,7 @@
 #include <numeric>
 
 const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
-};
+    };
 
 
 //Définition de la grille : 22 lignes et 10 colonnes 

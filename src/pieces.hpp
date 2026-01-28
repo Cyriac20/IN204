@@ -18,9 +18,13 @@ class Piece {
         bool gravite(sf::Clock& horloge, grille& matrice, float niveau);
         void apparition(grille& matrice);
         void effacer(grille& matrice);
+
         virtual ~Piece() = default; //évite les fuites mémoires
+
         bool mouvement(grille& matrice, sf::Keyboard::Key touche);
         virtual void rotation(grille& matrice) = 0; //indique que la rotation des pièces est propre à chaque pièce
+
+        void afficherPreview(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE = 34);
 
 };
 

@@ -52,6 +52,7 @@ int main(){
 
     // Génération de la première pièce aléatoire
     std::unique_ptr<Piece> piece = piece_aleatoire();
+    std::unique_ptr<Piece> nextPiece = piece_aleatoire();
 
     
     // Fonction permettant de réinitialiser complètement la partie (après une défaite par exemple)
@@ -191,7 +192,8 @@ int main(){
                 }
 
                 // Génération d’une nouvelle pièce
-                piece = piece_aleatoire();
+                piece = std::move(nextPiece);
+                nextPiece = piece_aleatoire();
 
                 // Game Over si la pièce ne peut pas apparaître
                 if (!matrice.emplacement_disponible(piece->position))
@@ -201,6 +203,10 @@ int main(){
             }
 
             menu.afficher_jeu(fenetre);
+
+            // Affichage de la prochaine pièce
+            nextPiece->afficherPreview(fenetre, 650, 120);
+
             // Affichages d'éléments
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
             matrice.afficher(fenetre, 757, 293);
