@@ -89,6 +89,7 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
     sf::VertexArray sommets(sf::PrimitiveType::Triangles);
     sf::VertexArray lignes(sf::PrimitiveType::Lines);
 
+    float TAILLE_CASE = fenetre.getSize().x/53;
 
     for (int i = 0; i < 22; ++i){
 
@@ -116,16 +117,16 @@ void grille::afficher(sf::RenderWindow& fenetre, int offsetX, int offsetY){
     }
     for (int i = 0; i <= 22; i++){
             float y_ligne = offsetY + i * TAILLE_CASE;
-            lignes.append( {{offsetX, y_ligne }, sf::Color(50,50,50) } );
-            lignes.append( {{offsetX + 10 * TAILLE_CASE, y_ligne}, sf::Color(50,50,50)} );
+            lignes.append( {{(float)offsetX, y_ligne }, sf::Color(50,50,50) } );
+            lignes.append( {{offsetX + 10.f * TAILLE_CASE, y_ligne}, sf::Color(50,50,50)} );
         
     }
 
     for (int j = 0; j <= 10; j++){
 
         float x_ligne = offsetX + j * TAILLE_CASE;
-        lignes.append( {{x_ligne, offsetY }, sf::Color(50,50,50)});
-        lignes.append( {{x_ligne, offsetY + 22 * TAILLE_CASE}, sf::Color(50,50,50)});
+        lignes.append( {{x_ligne, (float)offsetY }, sf::Color(50,50,50)});
+        lignes.append( {{x_ligne, offsetY + 22.f * TAILLE_CASE}, sf::Color(50,50,50)});
     }
     fenetre.draw(sommets);
     fenetre.draw(lignes);

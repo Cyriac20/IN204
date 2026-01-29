@@ -103,5 +103,5 @@ public:
 
 
 std::unique_ptr<Piece> piece_aleatoire(std::array<int,7>& compteurs_stat);
-void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE = 24);
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE, int largeur);
 #endif

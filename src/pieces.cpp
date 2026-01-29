@@ -375,11 +375,11 @@ std::vector<std::vector<std::array<int, 2>>> positions_pieces = {
         {{0, 0}, {0, 1}, {1, 1}, {1, 2}}
 };
 
-void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE)
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE, int hauteur)
 {
     sf::RectangleShape bloc(sf::Vector2f(TAILLE_CASE - 2, TAILLE_CASE - 2));
 
-    int y_offset = 150;
+    int y_offset = hauteur/8;
 
     for (int i = 0; i < 7; i++) {
     
@@ -393,6 +393,6 @@ void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE)
         fenetre.draw(bloc);
     }
 
-    y_offset += 65;
+    y_offset += hauteur/19;
     }
 }

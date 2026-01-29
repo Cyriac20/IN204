@@ -34,6 +34,8 @@ int main(){
     int largeur = bureau.size.x;
     int hauteur = bureau.size.y;
 
+    float TAILLE_CASE = largeur/53;
+
     // Initialisation du menu et chargement de son image de fond
     Menu menu(largeur, hauteur);
     menu.loadBackground("../src/res/menu.png",largeur, hauteur);
@@ -211,8 +213,8 @@ int main(){
             menu.afficher_jeu(fenetre);
 
             // Affichage de la prochaine pièce
-            nextPiece->afficherPreview(fenetre, largeur/3.1, hauteur/8);
-            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8);
+            nextPiece->afficherPreview(fenetre, largeur/3.1, hauteur/8, TAILLE_CASE); 
+            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8, TAILLE_CASE/1.4, hauteur);
             
 
             // Affichages d'éléments
@@ -226,7 +228,7 @@ int main(){
             fenetre.clear(sf::Color::Black);
             menu.afficher_fin(fenetre);
             score.afficher(fenetre);
-            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8);
+            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8, TAILLE_CASE/1.4, hauteur);
         }
 
         fenetre.display();

@@ -12,19 +12,19 @@ Score::Score(float largeur, float hauteur){
     score_texte.emplace(police);
     score_texte->setCharacterSize(24);
     score_texte->setFillColor(sf::Color::White);
-    score_texte->setPosition({largeur/4.f, hauteur/4.f - 50.f});
+    score_texte->setPosition({largeur/4.f, hauteur/5.f - 50.f});
 
     niveau_texte.emplace(police);
     niveau_texte->setCharacterSize(24);
     niveau_texte->setFillColor(sf::Color::White);
-    niveau_texte->setPosition({largeur/4.f, hauteur/4.f - 20.f});
+    niveau_texte->setPosition({largeur/4.f, hauteur/5.f - 20.f});
     
     int y_offset = 150;
     for (int i = 0; i < 7; ++i){
 
         sf::Text texte(police);
         //texte.setString(std::to_string(compteurs[i])); // Votre compteur
-        texte.setPosition({largeur/3.1 + 20 , hauteur/8 + y_offset});
+        texte.setPosition({largeur/(float)3.1 + 20 , hauteur/8 + y_offset});
         textes_stat.push_back(texte);
         y_offset += 65;
     } 
