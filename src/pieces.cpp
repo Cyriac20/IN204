@@ -78,21 +78,6 @@ bool Piece::mouvement(grille& matrice, sf::Keyboard::Key touche){
 
 }
 
-//----------------------- Piece O ---------------------------
-
-PieceO::PieceO(){
-    position = {{
-                {0,4}, {0,5}, 
-                {1,4}, {1,5}
-            }};
-    id = 1;
-    
-}
-
-void PieceO::rotation(grille& matrice) {}; //La rotation n'a pas d'effet
-
-
-
 //----------------------- Piece I ----------------------------
 
 PieceI::PieceI(){
@@ -100,7 +85,7 @@ PieceI::PieceI(){
                 {0,3}, {0,4}, {0,5}, {0,6}
             }};
     etat_rotation = 1;
-    id = 2;
+    id = 1;
 }
 
 //Fonction de rotation de la pièce
@@ -120,6 +105,22 @@ void PieceI::rotation(grille& matrice){
     }
     apparition(matrice);
 }
+
+
+//----------------------- Piece O ---------------------------
+
+PieceO::PieceO(){
+    position = {{
+                {0,4}, {0,5}, 
+                {1,4}, {1,5}
+            }};
+    id = 2;
+    
+}
+
+void PieceO::rotation(grille& matrice) {}; //La rotation n'a pas d'effet
+
+
 
 
 //----------------------- Piece T ---------------------------
@@ -188,7 +189,6 @@ void PieceL::rotation(grille& matrice) {
     }
     apparition(matrice);
 }
-
 //----------------------- Piece J ---------------------------
 PieceJ::PieceJ(){
     position = {{ {0,3}, {1,3}, {1,4}, 
@@ -281,27 +281,35 @@ std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> distrib(1,7);
 
-std::unique_ptr<Piece> piece_aleatoire(){
+std::unique_ptr<Piece> piece_aleatoire(std::array<int,7>& compteurs_stat){
     int choix = distrib(gen);
     switch(choix){
         case 1:
+            compteurs_stat[0] +=1;
             return std::make_unique<PieceI>();
+            
         case 2:
+            compteurs_stat[1] +=1;
             return std::make_unique<PieceO>();
         case 3:
+            compteurs_stat[2] +=1;
             return std::make_unique<PieceT>();
         case 4:
+            compteurs_stat[3] +=1;
             return std::make_unique<PieceL>();
         case 5:
+            compteurs_stat[4] +=1;
             return std::make_unique<PieceJ>();
         case 6:
+            compteurs_stat[5] +=1;
             return std::make_unique<PieceS>();
         case 7:
+            compteurs_stat[6] +=1;
             return std::make_unique<PieceZ>();
     }
     return nullptr;
-
 }
+
 
 
 //Fonction définissant la gravité (descente automatique des pièces), ainsi que la puissance de cette gravité (dépendant du niveau de difficulté choisi)
@@ -325,6 +333,8 @@ bool Piece::gravite(sf::Clock& horloge, grille& matrice, float niveau){
 const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
     };
 
+
+
 // Fonction pour afficher une pièce (sert dans l'affichage de la prochaine pièce)
 void Piece::afficherPreview(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE)
 {
@@ -338,5 +348,51 @@ void Piece::afficherPreview(sf::RenderWindow& fenetre, int x, int y, int TAILLE_
 
         bloc.setPosition(sf::Vector2f(px, py));
         fenetre.draw(bloc);
+    }
+    
+}
+
+std::vector<std::vector<std::array<int, 2>>> positions_pieces = {
+        // Pièce I
+        {{0, 0}, {0, 1}, {0, 2}, {0, 3}},
+        
+        // Pièce O
+        {{0, 0}, {0, 1}, {1, 0}, {1, 1}},
+        
+        // Pièce T
+        {{0, 1}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce L
+        {{0, 2}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce J
+        {{0, 0}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce S
+        {{0, 1}, {0, 2}, {1, 0}, {1, 1}},
+        
+        // Pièce Z
+        {{0, 0}, {0, 1}, {1, 1}, {1, 2}}
+};
+
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE)
+{
+    sf::RectangleShape bloc(sf::Vector2f(TAILLE_CASE - 2, TAILLE_CASE - 2));
+
+    int y_offset = 150;
+
+    for (int i = 0; i < 7; i++) {
+    
+    bloc.setFillColor(couleur[i]);
+    
+    for (auto& pos : positions_pieces[i]) {
+        int px = x + (pos[1] + 4) * TAILLE_CASE;
+        int py = y + y_offset + pos[0] * TAILLE_CASE;
+        
+        bloc.setPosition(sf::Vector2f(px, py));
+        fenetre.draw(bloc);
+    }
+
+    y_offset += 65;
     }
 }

@@ -11,9 +11,10 @@
 class Piece {
     protected:
         Piece(); //On ne crée pas directement la pièce dans la classe mère
-        int id;  // couleur de la pièce
+        
 
     public:
+        int id;  // couleur de la pièce
         std::array<std::array<int,2>,4> position;
         bool gravite(sf::Clock& horloge, grille& matrice, float niveau);
         void apparition(grille& matrice);
@@ -48,6 +49,7 @@ public:
     void rotation(grille& matrice) override; // rotation spécifique (pas de rotation)
 };
 
+
 // Pièce T
 class PieceT : public Piece {
 
@@ -56,6 +58,7 @@ public:
     ~PieceT() override {};
     void rotation(grille& matrice) override; // rotation spécifique
 };
+
 
 // Pièce L
 class PieceL : public Piece {
@@ -66,23 +69,13 @@ public:
     void rotation(grille& matrice) override; // rotation spécifique
 };
 
+
 // Pièce J
 class PieceJ : public Piece {
 
 public:
     PieceJ();
     ~PieceJ() override {};
-    void rotation(grille& matrice) override; // rotation spécifique
-};
-
-// Pièce Z
-class PieceZ : public Piece {
-private : 
-    int etat_rotation;
-    
-public:
-    PieceZ();
-    ~PieceZ() override {};
     void rotation(grille& matrice) override; // rotation spécifique
 };
 
@@ -97,6 +90,18 @@ public:
     void rotation(grille& matrice) override; // rotation spécifique
 };
 
-std::unique_ptr<Piece> piece_aleatoire();
+// Pièce Z
+class PieceZ : public Piece {
+private : 
+    int etat_rotation;
+    
+public:
+    PieceZ();
+    ~PieceZ() override {};
+    void rotation(grille& matrice) override; // rotation spécifique
+};
 
+
+std::unique_ptr<Piece> piece_aleatoire(std::array<int,7>& compteurs_stat);
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE = 24);
 #endif

@@ -40,7 +40,7 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
 
     // Texte d'instructions pour la sélection du niveau
     texte_instruction.emplace(police);
-    texte_instruction->setString("<-  ->  choisir | Entree  valider");
+    texte_instruction->setString(L"<- ->  choisir | Entrée  valider");
     texte_instruction->setCharacterSize(30);
     texte_instruction->setFillColor(sf::Color(180,180,180));
 
@@ -53,12 +53,12 @@ Menu::Menu(float largeur, float hauteur) : Index(0) {
 
     texte_commandes.emplace(police);
     texte_commandes->setString(
-        "Fleche GAUCHE  :  Deplacer a gauche\n\n"
-        "Fleche DROITE  :  Deplacer a droite\n\n"
-        "Fleche BAS     :  Descente rapide\n\n"
-        "Fleche HAUT    :  Rotation\n\n"
-        "ENTREE         :  Valider\n\n"
-        "ECHAP          :  Retour au menu"
+        L"Flèche GAUCHE  :  Déplacer à gauche\n\n"
+        L"Flèche DROITE  :  Déplacer à droite\n\n"
+        L"Flèche BAS     :  Descente rapide\n\n"
+        L"Flèche HAUT    :  Rotation\n\n"
+        L"ENTREE         :  Valider\n\n"
+        L"ECHAP          :  Retour au menu"
     );
     texte_commandes->setCharacterSize(30);
     texte_commandes->setFillColor(sf::Color(200,200,200));

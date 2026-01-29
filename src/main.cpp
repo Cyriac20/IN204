@@ -51,19 +51,24 @@ int main(){
     bool clicked = false;
 
     // Génération de la première pièce aléatoire
-    std::unique_ptr<Piece> piece = piece_aleatoire();
-    std::unique_ptr<Piece> nextPiece = piece_aleatoire();
+    std::unique_ptr<Piece> piece = piece_aleatoire(score.compteurs_stat);
+    score.actualisation_stat(score.compteurs_stat);
+    std::unique_ptr<Piece> nextPiece = piece_aleatoire(score.compteurs_stat);
 
     
     // Fonction permettant de réinitialiser complètement la partie (après une défaite par exemple)
     auto reset_jeu = [&](){
         matrice = grille();
         score.reset();
+        
         niveau_choisi = 0;
-        piece = piece_aleatoire();
+        piece = piece_aleatoire(score.compteurs_stat);
+        score.actualisation_stat(score.compteurs_stat);
+        nextPiece = piece_aleatoire(score.compteurs_stat);
         piece->apparition(matrice);
         horloge.restart();
         horloge_gravite.restart();
+       
     };
 
 
@@ -119,7 +124,7 @@ int main(){
                     // Validation du niveau choisi et début de la partie
                     if (toucheEvent->code == sf::Keyboard::Key::Enter){
                         matrice = grille();
-                        score.reset();
+                        
 
                         // Initialisation du score et du niveau
                         score.niveau = niveau_choisi;
@@ -193,7 +198,8 @@ int main(){
 
                 // Génération d’une nouvelle pièce
                 piece = std::move(nextPiece);
-                nextPiece = piece_aleatoire();
+                score.actualisation_stat(score.compteurs_stat);
+                nextPiece = piece_aleatoire(score.compteurs_stat);
 
                 // Game Over si la pièce ne peut pas apparaître
                 if (!matrice.emplacement_disponible(piece->position))
@@ -206,6 +212,8 @@ int main(){
 
             // Affichage de la prochaine pièce
             nextPiece->afficherPreview(fenetre, largeur/3.1, hauteur/8);
+            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8);
+            
 
             // Affichages d'éléments
             horloge.dessiner_horloge(fenetre, largeur/1.2, hauteur/2);
@@ -218,6 +226,7 @@ int main(){
             fenetre.clear(sf::Color::Black);
             menu.afficher_fin(fenetre);
             score.afficher(fenetre);
+            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8);
         }
 
         fenetre.display();

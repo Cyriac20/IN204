@@ -12,12 +12,23 @@ Score::Score(float largeur, float hauteur){
     score_texte.emplace(police);
     score_texte->setCharacterSize(24);
     score_texte->setFillColor(sf::Color::White);
-    score_texte->setPosition({largeur/4.f, hauteur/4.f});
+    score_texte->setPosition({largeur/4.f, hauteur/4.f - 50.f});
 
     niveau_texte.emplace(police);
     niveau_texte->setCharacterSize(24);
     niveau_texte->setFillColor(sf::Color::White);
-    niveau_texte->setPosition({largeur/4.f, hauteur/4.f + 30.f});
+    niveau_texte->setPosition({largeur/4.f, hauteur/4.f - 20.f});
+    
+    int y_offset = 150;
+    for (int i = 0; i < 7; ++i){
+
+        sf::Text texte(police);
+        //texte.setString(std::to_string(compteurs[i])); // Votre compteur
+        texte.setPosition({largeur/3.1 + 20 , hauteur/8 + y_offset});
+        textes_stat.push_back(texte);
+        y_offset += 65;
+    } 
+
     actualisation();
       
 }
@@ -27,6 +38,14 @@ Score::Score(float largeur, float hauteur){
 void Score::actualisation(){
     score_texte->setString("SCORE : " + std::to_string(score) );
     niveau_texte->setString("NIVEAU : " + std::to_string(niveau) );
+   
+}
+
+void Score::actualisation_stat(std::array<int, 7> compteurs){
+    for (int i = 0; i < 7; ++i){
+        textes_stat[i].setString(std::to_string(compteurs[i])); 
+    } 
+    
 }
 
 
@@ -74,6 +93,9 @@ void Score::reset(){
     score = 0;
     niveau = 0; 
     nb_ligne_casse = 0;
+    for (int i = 0; i < 7; ++i){
+        compteurs_stat[i] = 0;
+    }
     actualisation();
 }
 
@@ -81,4 +103,7 @@ void Score::reset(){
 void Score::afficher(sf::RenderWindow& fenetre){
     fenetre.draw(*score_texte);
     fenetre.draw(*niveau_texte);
+    for (int i = 0; i < 7; ++i){
+        fenetre.draw(textes_stat[i]);
+    }
 }
