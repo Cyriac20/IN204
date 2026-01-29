@@ -30,5 +30,6 @@ class Score {
 
 };
 
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE, int hauteur);
 
 #endif

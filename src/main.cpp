@@ -214,7 +214,7 @@ int main(){
 
             // Affichage de la prochaine pièce
             nextPiece->afficherPreview(fenetre, largeur/3.1, hauteur/8, TAILLE_CASE); 
-            afficherStat(fenetre, largeur/3.1 - 280, hauteur/8, TAILLE_CASE/1.4, hauteur);
+            afficherStat(fenetre, largeur/3.1 - 200, hauteur/8, TAILLE_CASE, hauteur);
             
 
             // Affichages d'éléments

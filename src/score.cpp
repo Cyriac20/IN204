@@ -107,3 +107,60 @@ void Score::afficher(sf::RenderWindow& fenetre){
         fenetre.draw(textes_stat[i]);
     }
 }
+
+std::vector<std::vector<std::array<int, 2>>> positions_pieces = {
+        // Pièce I
+        {{0, 0}, {0, 1}, {0, 2}, {0, 3}},
+        
+        // Pièce O
+        {{0, 0}, {0, 1}, {1, 0}, {1, 1}},
+        
+        // Pièce T
+        {{0, 1}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce L
+        {{0, 2}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce J
+        {{0, 0}, {1, 0}, {1, 1}, {1, 2}},
+        
+        // Pièce S
+        {{0, 1}, {0, 2}, {1, 0}, {1, 1}},
+        
+        // Pièce Z
+        {{0, 0}, {0, 1}, {1, 1}, {1, 2}}
+};
+
+const sf::Color couleur[7] = {sf::Color::Red, sf::Color::Blue, sf::Color::Magenta, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan, sf::Color::White
+    };
+
+
+void afficherStat(sf::RenderWindow& fenetre, int x, int y, int TAILLE_CASE, int hauteur)
+{
+    sf::VertexArray sommets(sf::PrimitiveType::Triangles);
+    int y_offset = hauteur/8;
+    float taille = TAILLE_CASE - 2;
+
+    for (int i = 0; i < 7; i++) {
+    
+    sf::Color couleurPiece = couleur[i];
+    
+    for (auto& pos : positions_pieces[i]) {
+
+        float px = x + (pos[1] + 4) * TAILLE_CASE;
+        float py = y + y_offset + pos[0] * TAILLE_CASE;
+        
+        sommets.append({{px, py}, couleurPiece});
+        sommets.append({{px + taille, py}, couleurPiece});
+        sommets.append({{px, py + taille}, couleurPiece});
+        
+        
+        sommets.append({{px + taille, py}, couleurPiece});
+        sommets.append({{px + taille, py + taille}, couleurPiece});
+        sommets.append({{px, py + taille}, couleurPiece});
+    }
+
+    y_offset += hauteur/14;
+    }
+    fenetre.draw(sommets);
+}
